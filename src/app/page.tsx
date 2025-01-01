@@ -30,7 +30,7 @@ export default async function Page() {
 						<span className='text-lg text-gray-400'>{` / ${today.getFullYear() % 4 === 0 ? 366 : 365}`}</span>
 					</div>
 					<div>
-						How was your day <span className='font-bold text-yellow-500'>Z0XM</span> ?
+						How was your day <span className='font-bold text-yellow-500'>(This will show your name soon.)</span> ?
 						{/* {userMetadata.display_name} */}
 					</div>
 					<Link href='/how' className='text-sm italic underline'>

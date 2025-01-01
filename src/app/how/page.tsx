@@ -26,6 +26,8 @@ export default async function HowPage() {
 						<li>Sensitive and personal data would be hidden from the team till the final stage of the recap.</li>
 						<li>We will take in your suggestions and ideas soon.</li>
 						<li>Photos/Videos would soon be supported</li>
+						<li>You would be able to view your submitted data soon.</li>
+						<li>General Tech and UI of the app would be improved soon.</li>
 					</ol>
 				</li>
 			</ul>
