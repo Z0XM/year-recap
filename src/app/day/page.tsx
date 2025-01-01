@@ -6,6 +6,7 @@ import { addDayData } from './actions';
 import { Label } from '@radix-ui/react-label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import Link from 'next/link';
 
 export default function Page() {
 	// const userMetadata = data.user.user_metadata as UserMetadata;
@@ -32,6 +33,9 @@ export default function Page() {
 					How was your day <span className='font-bold text-yellow-500'>(This will show your name soon.)</span> ?
 					{/* {userMetadata.display_name} */}
 				</div>
+				<Link href='/how' className='text-sm italic underline'>
+					What is this?
+				</Link>
 				<div className='text-sm italic'>Note: All fields are optional. You can fill as much as you want.</div>
 				<Form action={formAction} className='w-full my-4'>
 					<div className='flex w-full flex-col gap-6'>
