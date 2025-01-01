@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { SigninFormSchema, SignupFormSchema } from '@/lib/type-definitions/login';
+import { getURL } from 'next/dist/shared/lib/utils';
 
 // export async function signIn(formData: FormData) {
 // 	console.log(Array.from(formData.entries()));
@@ -45,7 +46,8 @@ export async function signInOrSignUp(mode: 'sign-in' | 'sign-up', prevState: { m
 						data: {
 							//@ts-expect-error display_name will be in signup schema
 							display_name: validatedFields.data.display_name
-						}
+						},
+						emailRedirectTo: getURL()
 					}
 			  })
 			: await supabase.auth.signInWithPassword({
