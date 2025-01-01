@@ -29,7 +29,8 @@ export default function Page() {
 					<span className='text-lg text-gray-400'>{` / ${today.getFullYear() % 4 === 0 ? 366 : 365}`}</span>
 				</div>
 				<div>
-					How was your day <span className='font-bold text-yellow-500'>Z0XM</span> ?{/* {userMetadata.display_name} */}
+					How was your day <span className='font-bold text-yellow-500'>(This will show your name soon.)</span> ?
+					{/* {userMetadata.display_name} */}
 				</div>
 				<div className='text-sm italic'>Note: All fields are optional. You can fill as much as you want.</div>
 				<Form action={formAction} className='w-full my-4'>

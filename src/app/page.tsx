@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 export default async function Page() {
@@ -32,6 +33,9 @@ export default async function Page() {
 						How was your day <span className='font-bold text-yellow-500'>Z0XM</span> ?
 						{/* {userMetadata.display_name} */}
 					</div>
+					<Link href='/how' className='text-sm italic underline'>
+						What is this?
+					</Link>
 					<div>You have completed today&apos;s form.</div>
 				</div>
 			</div>
