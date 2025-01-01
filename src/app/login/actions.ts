@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { SigninFormSchema, SignupFormSchema } from '@/lib/type-definitions/login';
-import { getURL } from 'next/dist/shared/lib/utils';
+import { getURL } from '@/lib/utils';
 
 // export async function signIn(formData: FormData) {
 // 	console.log(Array.from(formData.entries()));
