@@ -4,16 +4,10 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { createClient } from '@/lib/supabase/server';
-import { DayData, DayDataSchema } from '@/lib/type-definitions/dayData';
+import { DayDataSchema } from '@/lib/type-definitions/dayData';
 
-export async function addDayData(day_int: number, prevState: { message: string }, formData: FormData) {
+export async function addDayData(day_int: number, userId: string, prevState: { message: string }, formData: FormData) {
 	const supabase = await createClient();
-
-	const user = await supabase.auth.getUser();
-
-	if (!user || !user.data.user) {
-		return redirect('/login');
-	}
 
 	const metadata: { [key: string]: unknown } = {};
 
@@ -26,7 +20,7 @@ export async function addDayData(day_int: number, prevState: { message: string }
 	const validatedFields = DayDataSchema.safeParse({
 		day_int: day_int,
 		metadata,
-		user_id: user.data.user.id
+		user_id: userId
 	});
 
 	if (!validatedFields.success) {

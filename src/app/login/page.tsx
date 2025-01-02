@@ -26,6 +26,7 @@ export default function LoginPage({
 		<div className='flex min-h-svh w-full items-center justify-center p-6 md:p-10'>
 			<div className='w-full max-w-sm'>
 				<div className={cn('flex flex-col gap-6')}>
+					<div className='flex items-center gap-2 self-center font-medium'>TheHandMadeSmiles</div>
 					<Card>
 						<CardHeader>
 							<CardTitle className='text-2xl'>Login</CardTitle>

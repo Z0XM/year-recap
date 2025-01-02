@@ -1,14 +1,16 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Patrick_Hand, Sour_Gummy } from 'next/font/google';
 import './globals.css';
+import AppProviders from '@/providers';
+import Navbar from '@/components/Navbar';
+import { Toaster } from '@/components/ui/sonner';
 
-const geistSans = Geist({
-	variable: '--font-geist-sans',
+const font_patrick = Patrick_Hand({
+	weight: '400',
 	subsets: ['latin']
 });
 
-const geistMono = Geist_Mono({
-	variable: '--font-geist-mono',
+const font_sour = Sour_Gummy({
 	subsets: ['latin']
 });
 
@@ -24,7 +26,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+			<body className={`${font_sour.className}`}>
+				<AppProviders>
+					<Navbar />
+					<Toaster />
+					{children}
+				</AppProviders>
+			</body>
 		</html>
 	);
 }
