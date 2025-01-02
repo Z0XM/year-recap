@@ -28,7 +28,7 @@ export default function Page() {
 	if (hasFilledDayForm) {
 		return (
 			<div className='flex w-full items-center justify-center p-6 md:p-10'>
-				<div className='flex flex-col w-1/2 text-center gap-4'>
+				<div className='flex flex-col w-3/4 md:w-1/2 text-center gap-4'>
 					{/* <div className=' text-2xl font-semibold text-white'>
 						{today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, ' ')}
 					</div>
@@ -56,7 +56,7 @@ export default function Page() {
 
 	return (
 		<div className='flex w-full items-center justify-center p-6 md:p-10'>
-			<div className='flex flex-col w-1/2 text-center gap-4'>
+			<div className='flex flex-col w-3/4 md:w-1/2 text-center gap-4'>
 				<HelloUser today={today} display_name={user.display_name} />
 				<DayForm dayInt={dayInt} userId={user!.id} />
 			</div>
