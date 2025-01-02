@@ -13,7 +13,7 @@ export default function AppInfoProvider({
 	const supabaseClient = createClient();
 
 	const { user } = useAuthStore();
-	const { setDayInt, setHasFilledDayForm, refetch } = useAppInfo();
+	const { setDayInt, setHasFilledDayForm } = useAppInfo();
 
 	useEffect(() => {
 		const today = new Date(new Date().getTime() - 12 * 60 * 60 * 1000);
@@ -35,7 +35,7 @@ export default function AppInfoProvider({
 					}
 				});
 		}
-	}, [user, refetch]);
+	}, [user]);
 
 	return <>{children}</>;
 }

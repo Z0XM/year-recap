@@ -46,8 +46,7 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
 	const { dayInt, userId } = props;
 	const [errorMsg, setErrorMsg] = useState('');
 
-	const { setRefetch } = useAppInfo();
-
+	const { setHasFilledDayForm } = useAppInfo();
 	const router = useRouter();
 
 	return (
@@ -61,9 +60,11 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
 					addDayData(dayInt, userId, formData).then((error) => {
 						if (error?.message) {
 							setErrorMsg(error.message);
+						} else {
+							setHasFilledDayForm(true);
 						}
 					});
-					setRefetch(true);
+
 					router.refresh();
 				}}>
 				<div className='flex w-full flex-col gap-6'>
