@@ -3,11 +3,23 @@
 import DayForm from '@/components/DayForm';
 import { useAppInfo } from '@/store/appInfo';
 import { useAuthStore } from '@/store/auth';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Page() {
 	const { user } = useAuthStore();
 	const { hasFilledDayForm, dayInt } = useAppInfo();
 	const today = new Date(new Date().getTime() - 12 * 60 * 60 * 1000);
+	const router = useRouter();
+
+	// useEffect(() => {
+	// 	console.log('hi', user);
+	// 	if (!user) {
+	// 		setTimeout(() => {
+	// 			router.refresh();
+	// 		}, 3 * 1000);
+	// 	}
+	// }, [user]);
 
 	if (!user) {
 		return <>Loading...</>;

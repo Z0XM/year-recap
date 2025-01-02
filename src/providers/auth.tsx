@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/client';
 import * as Model from '@/lib/type-definitions/models';
 import { useAuthStore } from '@/store/auth';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
@@ -14,6 +15,8 @@ export default function AuthProvider({
 	const supabaseClient = createClient();
 
 	const { login, logout, user } = useAuthStore();
+
+	const router = useRouter();
 
 	useEffect(() => {
 		const { data: authListener } = supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -34,17 +37,22 @@ export default function AuthProvider({
 								display_name: user.display_name
 							});
 							toast.success('Login successful!');
+							router.refresh();
 						} else {
 							console.error(error);
 							toast.error('User not found');
+							router.refresh();
 						}
 					});
 			};
 
-			if (event === 'SIGNED_IN' && session?.user && !user) {
+			console.log(event, session, user);
+			if (event === 'SIGNED_IN' && session?.user && user === null) {
 				saveUser(session.user.id);
 			} else if (event === 'SIGNED_OUT') {
 				logout();
+				toast.success('Logout successful!');
+				router.refresh();
 			} else if (event === 'USER_UPDATED' && session?.user) {
 				saveUser(session.user.id);
 			}

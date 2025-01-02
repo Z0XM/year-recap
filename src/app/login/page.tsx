@@ -1,26 +1,64 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn, getURL } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { signInOrSignUp } from './actions';
 import Link from 'next/link';
-import Form from 'next/form';
-import { use, useActionState } from 'react';
+import { use, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
+import { SigninFormSchema, SignupFormSchema } from '@/lib/type-definitions/login';
+
+async function signInOrSignUp(mode: 'sign-in' | 'sign-up', prevState: { message: string }, formData: FormData) {
+	const supabase = createClient();
+
+	const validatedFields = (mode === 'sign-up' ? SignupFormSchema : SigninFormSchema).safeParse({
+		display_name: formData.get('display_name'),
+		email: formData.get('email'),
+		password: formData.get('password')
+	});
+
+	if (!validatedFields.success) {
+		return {
+			message: Object.values(validatedFields.error.flatten().fieldErrors).flat().join(', ')
+		};
+	}
+
+	const { error } =
+		mode === 'sign-up'
+			? await supabase.auth.signUp({
+					email: validatedFields.data.email,
+					password: validatedFields.data.password,
+					options: {
+						data: {
+							//@ts-expect-error display_name will be in signup schema
+							display_name: validatedFields.data.display_name
+						},
+						emailRedirectTo: getURL()
+					}
+			  })
+			: await supabase.auth.signInWithPassword({
+					email: validatedFields.data.email,
+					password: validatedFields.data.password
+			  });
+	if (error) {
+		return {
+			message: error.message
+		};
+	}
+}
 
 export default function LoginPage({
 	searchParams
 }: {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-	const { mode } = use(searchParams);
+	const { mode: paramsMode } = use(searchParams);
 
-	const signInOrSignUpAction =
-		mode === 'sign-up' ? signInOrSignUp.bind(null, 'sign-up') : signInOrSignUp.bind(null, 'sign-in');
+	const mode = paramsMode === 'sign-up' ? 'sign-up' : 'sign-in';
 
-	const [formState, formAction, pending] = useActionState(signInOrSignUpAction, { message: '' });
+	const [errorMsg, setErrorMsg] = useState('');
 
 	return (
 		<div className='flex min-h-svh w-full items-center justify-center p-6 md:p-10'>
@@ -33,7 +71,16 @@ export default function LoginPage({
 							<CardDescription>Enter your email below to login to your account</CardDescription>
 						</CardHeader>
 						<CardContent>
-							<Form action={formAction}>
+							<form
+								onSubmit={(e) => {
+									e.preventDefault();
+									const formData = new FormData(e.target as HTMLFormElement);
+									signInOrSignUp(mode, { message: '' }, formData).then((error) => {
+										if (error?.message) {
+											setErrorMsg(error.message);
+										}
+									});
+								}}>
 								<div className='flex flex-col gap-6'>
 									{mode === 'sign-up' && (
 										<div className='grid gap-2'>
@@ -55,17 +102,17 @@ export default function LoginPage({
 										<Input name='password' type='password' required />
 									</div>
 									{mode === 'sign-up' ? (
-										<Button type='submit' disabled={pending} className='w-full'>
+										<Button type='submit' className='w-full'>
 											Sign up
 										</Button>
 									) : (
-										<Button type='submit' disabled={pending} className='w-full'>
+										<Button type='submit' className='w-full'>
 											Login
 										</Button>
 									)}
-									{formState?.message && (
+									{errorMsg && (
 										<div className='text-red-500 text-sm mt-2 p-2 border border-red-500 rounded bg-red-100'>
-											{formState.message}
+											{errorMsg}
 										</div>
 									)}
 									{/* <Button variant='outline' className='w-full'>
@@ -87,7 +134,7 @@ export default function LoginPage({
 										</Link>
 									</div>
 								)}
-							</Form>
+							</form>
 						</CardContent>
 					</Card>
 				</div>
