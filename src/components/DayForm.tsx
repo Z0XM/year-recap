@@ -21,27 +21,37 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
 			<Form action={formAction} className='w-full my-4'>
 				<div className='flex w-full flex-col gap-6'>
 					<div className='w-full flex flex-col gap-2'>
-						<Label htmlFor='day_score'>Rate your day out of 10.</Label>
-						<Input name='day_score' type='number' placeholder='7' min={-1} max={11} step={1} />
+						<Label htmlFor='day_score' className='text-md'>
+							Rate your day out of 10.
+						</Label>
+						<Input className='text-md' name='day_score' type='number' placeholder='7' min={-1} max={11} step={1} />
 					</div>
 					<div className='w-full flex flex-col gap-2'>
-						<Label htmlFor='day_word'>Describe today in short.</Label>
-						<Input name='day_word' type='text' placeholder='Average' />
+						<Label className='text-md' htmlFor='day_word'>
+							Describe today in short.
+						</Label>
+						<Input className='text-md' name='day_word' type='text' placeholder='Average' />
 					</div>
 					<div className='w-full flex flex-col gap-2'>
-						<Label htmlFor='day_color'>Assign a color for today.</Label>
-						<Input name='day_color' type='color' />
+						<Label className='text-md' htmlFor='day_color'>
+							Assign a color for today.
+						</Label>
+						<Input className='text-md' name='day_color' type='color' />
 					</div>
 					<div className='w-full flex flex-col gap-2'>
-						<Label htmlFor='day_person'>A person to remember for today.</Label>
-						<Input className='px-2 py-1' name='day_person' />
+						<Label className='text-md' htmlFor='day_person'>
+							A person to remember for today.
+						</Label>
+						<Input className='px-2 py-1 text-md' name='day_person' />
 					</div>
 					<div className='w-full flex flex-col gap-2'>
-						<Label htmlFor='day_note'>Write a note about today.</Label>
-						<Textarea className='px-2 py-1' name='day_note' placeholder='Today was a good day.' />
+						<Label htmlFor='day_note' className='text-md'>
+							Write a note about today.
+						</Label>
+						<Textarea className='px-2 py-1 text-md' name='day_note' placeholder='Today was a good day.' />
 					</div>
 
-					<Button type='submit' disabled={pending} className='w-full  text-white rounded p-2'>
+					<Button type='submit' disabled={pending} className='w-full  text-md rounded p-2'>
 						Submit
 					</Button>
 					{formState?.message && (
