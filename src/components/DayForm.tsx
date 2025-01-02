@@ -63,9 +63,8 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
 						} else {
 							setHasFilledDayForm(true);
 						}
+						router.refresh();
 					});
-
-					router.refresh();
 				}}>
 				<div className='flex w-full flex-col gap-6'>
 					<div className='w-full flex flex-col gap-2'>
