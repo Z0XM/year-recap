@@ -10,7 +10,7 @@ import { use, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { SigninFormSchema, SignupFormSchema } from '@/lib/type-definitions/login';
 
-async function signInOrSignUp(mode: 'sign-in' | 'sign-up', prevState: { message: string }, formData: FormData) {
+async function signInOrSignUp(mode: 'sign-in' | 'sign-up', formData: FormData) {
 	const supabase = createClient();
 
 	const validatedFields = (mode === 'sign-up' ? SignupFormSchema : SigninFormSchema).safeParse({
@@ -75,7 +75,7 @@ export default function LoginPage({
 								onSubmit={(e) => {
 									e.preventDefault();
 									const formData = new FormData(e.target as HTMLFormElement);
-									signInOrSignUp(mode, { message: '' }, formData).then((error) => {
+									signInOrSignUp(mode, formData).then((error) => {
 										if (error?.message) {
 											setErrorMsg(error.message);
 										}
