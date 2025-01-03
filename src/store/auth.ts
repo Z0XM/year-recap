@@ -1,5 +1,4 @@
 import * as Model from '@/lib/type-definitions/models';
-import { createContext } from 'react';
 import { create } from 'zustand';
 
 export interface AuthState {

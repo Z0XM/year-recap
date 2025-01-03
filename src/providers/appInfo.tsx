@@ -1,9 +1,11 @@
 'use client';
 
+import { LoadingSpinner } from '@/components/ui/loadingSpinner';
 import { createClient } from '@/lib/supabase/client';
 import { useAppInfo } from '@/store/appInfo';
 import { useAuthStore } from '@/store/auth';
-import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function AppInfoProvider({
 	children
@@ -14,6 +16,9 @@ export default function AppInfoProvider({
 
 	const { user } = useAuthStore();
 	const { setDayInt, setHasFilledDayForm } = useAppInfo();
+
+	const [isLoaded, setLoaded] = useState(false);
+	const pathname = usePathname();
 
 	useEffect(() => {
 		const today = new Date(new Date().getTime() - 12 * 60 * 60 * 1000);
@@ -26,16 +31,24 @@ export default function AppInfoProvider({
 				.select()
 				.eq('user_id', user.id)
 				.eq('day_int', dayInt)
-				.single()
 				.then(({ data }) => {
-					if (data) {
+					if (data && data.length > 0) {
 						setHasFilledDayForm(true);
 					} else {
 						setHasFilledDayForm(false);
 					}
+					setLoaded(true);
 				});
 		}
 	}, [user]);
+
+	if (!isLoaded && !pathname.startsWith('/p/login')) {
+		return (
+			<div className='w-screen h-screen flex items-center justify-center'>
+				<LoadingSpinner size={48} />
+			</div>
+		);
+	}
 
 	return <>{children}</>;
 }

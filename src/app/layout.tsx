@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import { Patrick_Hand, Sour_Gummy } from 'next/font/google';
 import './globals.css';
-import AppProviders from '@/providers';
-import Navbar from '@/components/Navbar';
 import { Toaster } from '@/components/ui/sonner';
 
 const font_patrick = Patrick_Hand({
@@ -27,11 +25,8 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={`${font_sour.className}`}>
-				<AppProviders>
-					<Navbar />
-					<Toaster />
-					{children}
-				</AppProviders>
+				<Toaster />
+				{children}
 			</body>
 		</html>
 	);

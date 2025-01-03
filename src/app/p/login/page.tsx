@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { use, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { SigninFormSchema, SignupFormSchema } from '@/lib/type-definitions/login';
+import { useRouter } from 'next/navigation';
 
 async function signInOrSignUp(mode: 'sign-in' | 'sign-up', formData: FormData) {
 	const supabase = createClient();
@@ -55,16 +56,18 @@ export default function LoginPage({
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
 	const { mode: paramsMode } = use(searchParams);
+	const router = useRouter();
+	const [errorMsg, setErrorMsg] = useState('');
 
 	const mode = paramsMode === 'sign-up' ? 'sign-up' : 'sign-in';
-
-	const [errorMsg, setErrorMsg] = useState('');
 
 	return (
 		<div className='flex min-h-svh w-full items-center justify-center p-6 md:p-10'>
 			<div className='w-full max-w-sm'>
 				<div className={cn('flex flex-col gap-6')}>
-					<div className='flex items-center gap-2 self-center font-medium'>TheHandMadeSmiles</div>
+					<Link className='flex items-center gap-2 self-center font-medium' href='/about'>
+						TheHandMadeSmiles
+					</Link>
 					<Card>
 						<CardHeader>
 							<CardTitle className='text-2xl'>Login</CardTitle>
@@ -80,6 +83,7 @@ export default function LoginPage({
 											setErrorMsg(error.message);
 										}
 									});
+									router.refresh();
 								}}>
 								<div className='flex flex-col gap-6'>
 									{mode === 'sign-up' && (
