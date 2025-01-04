@@ -1,4 +1,4 @@
-# This contains a list of features / TODO items that we plan to release for this project
+# Developers' Guide
 
 ## Features
 
@@ -11,6 +11,7 @@
 7. **Privacy**: Add encryption to personal content
 8. **Dashboards**: Provide data visualizations and summaries
 9. **History**: Allow viewing past submitted data.
+10. **Admin**: Admin Dashboards to view and manage users and data.
 
 ## Improvements
 

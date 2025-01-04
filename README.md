@@ -13,12 +13,14 @@ Read **[About](https://website/about)** for more information
 
 This project uses  **[Supabase](https://supabase.com/)** as a backend.
 
+You can choose any of the below mentioned below
+
 - Use existing shared alpha version
    1. Contact `z0xm.dev@gmail.com` for API keys
    2. Add API keys to `.env.local` file
 
 - Link with your own project
-   1. Create a new project on your supabase account
+   1. Create an organization or use an existing one to add a new project on your supabase account
    2. Goto `Authentication > Providers > Email` & Turn off 'Confirm Email', 'Secure email change' and 'Secure password change'
    3. Goto Sql Editor & Run these Sql scripts to setup the database
 
@@ -75,4 +77,4 @@ This project uses  **[Supabase](https://supabase.com/)** as a backend.
 1. `pnpm i`
 2. `pnpm dev`
 3. Visit `localhost:3000`
-4. Get started with /feature-list
+4. Get started with /feature-list in project directory 

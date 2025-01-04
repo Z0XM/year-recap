@@ -14,7 +14,7 @@ export default function Navbar() {
 	if (user) {
 		return (
 			<div className='flex justify-between items-center px-4 py-2 md:px-6 md:py-4 border-b-2 border-green-400'>
-				<Link href='/about' className='md:text-2xl'>
+				<Link href='/' className='md:text-2xl'>
 					TheHandMadeSmiles
 				</Link>
 				<div className='flex gap-2 md:gap-6'>
