@@ -65,6 +65,11 @@ You can choose any of the below mentioned below
         for each row execute procedure public.handle_new_user();
       ```
 
+      ```sql
+      ALTER ROLE authenticator SET pgrst.db_aggregates_enabled = 'true';
+      NOTIFY pgrst, 'reload config';
+      ```
+
    4. Go to connect & select `AppFrameworks > Next.js.` Copy the `.env.local` file.
 
 ### Environment Setup

@@ -1,7 +1,8 @@
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+
+export const revalidate = 3600;
 
 /**
  * [Server Rendered Page]
