@@ -1,8 +1,8 @@
-# Developers' Guide
+# Developers' TODO Guide
 
 ## Features
 
-1. **Hero**: Home page, `/` should load a hero page showcasing the project with options to use various features within the app
+1. ~~**Hero**: Home page, `/` should load a hero page showcasing the project with options to use various features within the app~~
 2. **Reminders**: Build a daily reminder for people to fill the form
 3. **Feedback**: An option to provide feedback
 4. **Profile**: Allow Setting up of user profiles

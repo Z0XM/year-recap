@@ -35,6 +35,7 @@ export default function AuthProvider({
 			.from('users')
 			.select()
 			.eq('id', userId)
+			.eq('isActive', true)
 			.single()
 			.then(({ data, error }) => {
 				if (data) {

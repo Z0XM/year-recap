@@ -47,7 +47,13 @@ export default async function Page() {
 		hasFilledMap[userData.user_id] = true;
 	});
 
-	const { data: dayCounts, error: dayCountError } = await supabase.from('day_data').select('user_id, day_int.count()');
+	const { data: dayCounts, error: dayCountError } = await supabase
+		.from('day_data')
+		.select('user_id, day_int.count()')
+		.in(
+			'user_id',
+			userArray.map((x) => x.id)
+		);
 
 	if (dayCountError || !dayCounts) {
 		console.error(dayCountError);
