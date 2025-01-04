@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/client';
 import { DayDataSchema } from '@/lib/type-definitions/dayData';
 import { useAppInfo } from '@/store/appInfo';
 import { useRouter } from 'next/navigation';
+import emojiRegex from 'emoji-regex';
 
 async function addDayData(day_int: number, userId: string, formData: FormData) {
 	const supabase = createClient();
@@ -71,11 +72,32 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
 					});
 				}}>
 				<div className='flex w-full flex-col gap-6'>
-					<div className='w-full flex flex-col gap-2'>
-						<Label htmlFor='day_score' className='text-md'>
-							Rate your day out of 10.
-						</Label>
-						<Input className='text-md' name='day_score' type='number' placeholder='7' min={-1} max={11} step={0.5} />
+					<div className='w-full flex gap-4'>
+						<div className='w-[80%] flex flex-col gap-2'>
+							<Label htmlFor='day_score' className='text-md'>
+								Rate your day out of 10.
+							</Label>
+							<Input className='text-md' name='day_score' type='number' placeholder='7' min={-1} max={11} step={0.5} />
+						</div>
+						<div className='w-[20%] flex flex-col gap-2'>
+							<Label htmlFor='day_emoji' className='text-md'>
+								How did you feel?
+							</Label>
+							<Input
+								className='text-md'
+								name='day_emoji'
+								type='text'
+								placeholder='😁'
+								maxLength={1}
+								onChange={(e) => {
+									const regex = emojiRegex();
+									const input = e.currentTarget.value;
+									if (!regex.test(input)) {
+										e.currentTarget.value = '';
+									}
+								}}
+							/>
+						</div>
 					</div>
 					<div className='w-full flex flex-col gap-2'>
 						<Label className='text-md' htmlFor='day_word'>
