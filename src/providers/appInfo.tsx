@@ -7,6 +7,13 @@ import { useAuthStore } from '@/store/auth';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+/**
+ * [Wrapper to load user's day data]
+ *
+ * Retriggers whenever the user changes.
+ * shows a loader until the day data is loaded.
+ *
+ */
 export default function AppInfoProvider({
 	children
 }: Readonly<{

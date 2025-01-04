@@ -4,6 +4,15 @@ import DayForm from '@/components/DayForm';
 import { useAppInfo } from '@/store/appInfo';
 import { useAuthStore } from '@/store/auth';
 
+/**
+ * [Client Rendered Page]
+ * [Authentication Required]
+ * [Path: /p/*]
+ *
+ * Shows the user a form to fill for the day.
+ * If the user has already filled the form, shows a message.
+ *
+ */
 export default function Page() {
 	const { user } = useAuthStore();
 	const { hasFilledDayForm, dayInt } = useAppInfo();

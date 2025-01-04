@@ -8,6 +8,13 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+/**
+ * [Wrapper to load user's auth]
+ *
+ * Retriggers whenever the user auth state changes.
+ * shows a loader until the user is signed in.
+ *
+ */
 export default function AuthProvider({
 	children
 }: Readonly<{

@@ -49,6 +49,8 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
 	const { setHasFilledDayForm } = useAppInfo();
 	const router = useRouter();
 
+	const [hasSubmitted, setHasSubmitted] = useState(false);
+
 	return (
 		<>
 			<div className='text-sm italic'>Note: All fields are optional. You can fill as much as you want.</div>
@@ -56,14 +58,16 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
 				className='w-full my-4'
 				onSubmit={(e) => {
 					e.preventDefault();
+					setHasSubmitted(true);
 					const formData = new FormData(e.target as HTMLFormElement);
 					addDayData(dayInt, userId, formData).then((error) => {
 						if (error?.message) {
 							setErrorMsg(error.message);
+							setHasSubmitted(false);
 						} else {
 							setHasFilledDayForm(true);
+							router.refresh();
 						}
-						router.refresh();
 					});
 				}}>
 				<div className='flex w-full flex-col gap-6'>
@@ -98,7 +102,7 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
 						<Textarea className='px-2 py-1 text-md' name='day_note' placeholder='Today was a good day.' />
 					</div>
 
-					<Button type='submit' className='w-full  text-md rounded p-2'>
+					<Button type='submit' disabled={hasSubmitted} className='w-full  text-md rounded p-2'>
 						Submit
 					</Button>
 					{errorMsg && (

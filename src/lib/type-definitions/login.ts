@@ -16,17 +16,6 @@ export const SignupFormSchema = z.object({
 
 export const SigninFormSchema = SignupFormSchema.omit({ display_name: true });
 
-// export type FormState =
-// 	| {
-// 			errors?: {
-// 				name?: string[];
-// 				email?: string[];
-// 				password?: string[];
-// 			};
-// 			message?: string;
-// 	  }
-// 	| undefined;
-
 export interface UserMetadata {
 	display_name: string;
 }

@@ -1,6 +1,15 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Label } from '@/components/ui/label';
 
+/**
+ * [Server Rendered Page]
+ * [Authentication Not Required]
+ * [Path: /about]
+ *
+ * The `AboutPage` component renders the About page of the application.
+ * It includes sections such as Basics, FAQs, Philosophy, and Who are we?
+ * Each section contains an accordion with multiple items providing information about the website.
+ */
 export default async function AboutPage() {
 	return (
 		<div className='flex flex-col w-screen items-center justify-center gap-4 px-4 py-2 md:px-6 md:py-4'>
