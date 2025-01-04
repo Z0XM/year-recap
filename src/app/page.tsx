@@ -66,6 +66,9 @@ export default async function Page() {
 					How Was Your Day <span className='text-primary'>?</span>
 				</Link>
 			</div>
+			<Link href={'/p/'} className='text-lg mb-4 italic underline'>
+				Goto your form!
+			</Link>
 			<Link href={'/about'} className='text-lg mb-16 italic underline'>
 				Know more
 			</Link>
