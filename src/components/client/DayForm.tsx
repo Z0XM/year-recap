@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Label } from './ui/label';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { Button } from './ui/button';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { Button } from '../ui/button';
 import { createClient } from '@/lib/supabase/client';
 import { DayDataSchema } from '@/lib/type-definitions/dayData';
 import { useAppInfo } from '@/store/appInfo';

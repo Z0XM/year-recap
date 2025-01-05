@@ -7,6 +7,7 @@ public.users (
     display_name text not null,
     email text not null,
     "isActive" boolean not null default true,
+    avatar text null,
     constraint users_pkey primary key (id)
 ) tablespace pg_default;          
 

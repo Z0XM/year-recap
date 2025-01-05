@@ -22,7 +22,7 @@ export default function AppInfoProvider({
 	const supabaseClient = createClient();
 
 	const { user } = useAuthStore();
-	const { setDayInt, setHasFilledDayForm } = useAppInfo();
+	const { setDayInt, setHasFilledDayForm, setTotalFilledDays } = useAppInfo();
 
 	const [isLoaded, setLoaded] = useState(false);
 	const pathname = usePathname();
@@ -45,6 +45,16 @@ export default function AppInfoProvider({
 						setHasFilledDayForm(false);
 					}
 					setLoaded(true);
+				});
+
+			supabaseClient
+				.from('day_data')
+				.select('', { count: 'exact', head: true })
+				.eq('user_id', user.id)
+				.then(({ count }) => {
+					if (count !== null) {
+						setTotalFilledDays(count);
+					}
 				});
 		}
 	}, [user]);

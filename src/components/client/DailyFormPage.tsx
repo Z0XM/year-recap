@@ -1,6 +1,6 @@
 'use client';
 
-import DayForm from '@/components/DayForm';
+import DayForm from '@/components/client/DayForm';
 import { useAppInfo } from '@/store/appInfo';
 import { useAuthStore } from '@/store/auth';
 import Link from 'next/link';
@@ -44,6 +44,7 @@ function HelloUser(props: { today: Date; display_name?: string }) {
 	return (
 		<>
 			<div className=' text-2xl font-semibold text-white'>
+				{today.toLocaleDateString('en-IN', { weekday: 'long' })},{' '}
 				{today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, ' ')}
 			</div>
 			<div className=' text-white'>

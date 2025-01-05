@@ -1,5 +1,5 @@
-import DailyFormPage from '@/components/DailyFormPage';
-import PeopleOfToday from '@/components/PeopleOfToday';
+import DailyFormPage from '@/components/client/DailyFormPage';
+import PeopleOfToday from '@/components/server/PeopleOfToday';
 
 /**
  * [Server Rendered Page]

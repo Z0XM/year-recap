@@ -1,4 +1,4 @@
-import PeopleOfToday from '@/components/PeopleOfToday';
+import PeopleOfToday from '@/components/server/PeopleOfToday';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 

@@ -1,5 +1,5 @@
 import AppProviders from '@/providers';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/server/Navbar';
 
 /**
  * [Server Rendered Layout]
@@ -14,10 +14,5 @@ export default function PrivateLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return (
-		<AppProviders>
-			<Navbar />
-			{children}
-		</AppProviders>
-	);
+	return <AppProviders>{children}</AppProviders>;
 }
