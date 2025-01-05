@@ -2,6 +2,15 @@
 
 Read **[About](https://website/about)** for more information
 
+## Tech Stack
+
+1. [NodeJs v20](https://nodejs.org/en/download)
+2. [pnpm](https://pnpm.io/installation)
+3. [NextJS](https://nextjs.org/docs)
+4. [Supabase](https://supabase.com/)
+5. [Resend](https://resend.com/)
+6. [Vercel](https://vercel.com/)
+
 ## Installation
 
 1. [NodeJs v20](https://nodejs.org/en/download)
@@ -13,69 +22,29 @@ Read **[About](https://website/about)** for more information
 
 This project uses  **[Supabase](https://supabase.com/)** as a backend.
 
-You can choose any of the below mentioned below
+<!-- You can choose any of the below mentioned below
 
 - Use existing shared alpha version
    1. Contact `z0xm.dev@gmail.com` for API keys
-   2. Add API keys to `.env.local` file
+   2. Add API keys to `.env.local` file -->
 
 - Link with your own project
    1. Create an organization or use an existing one to add a new project on your supabase account
    2. Goto `Authentication > Providers > Email` & Turn off 'Confirm Email', 'Secure email change' and 'Secure password change'
-   3. Goto Sql Editor & Run these Sql scripts to setup the database
-
-      ```sql
-      create table
-        public.users (
-            id uuid not null default gen_random_uuid (),
-            created_at timestamp with time zone not null default now(),
-            display_name text not null,
-            email text not null,
-            "isActive" boolean not null default true,
-            constraint users_pkey primary key (id)
-        ) tablespace pg_default;          
-      ```
-
-      ```sql
-      create table
-        public.day_data (
-            id uuid not null default gen_random_uuid (),
-            created_at timestamp with time zone not null default now(),
-            metadata json null,
-            user_id uuid not null,
-            day_int bigint not null,
-            constraint day_data_pkey primary key (id),
-            constraint day_data_user_id_fkey foreign key (user_id) references users (id)
-        ) tablespace pg_default;
-
-      create unique index if not exists single_day_data on public.day_data using btree (day_int, user_id) tablespace pg_default;
-      ```
-
-      ```sql
-      create function public.handle_new_user()
-        returns trigger as $$
-        begin
-            insert into public.users (id, email, display_name)
-            values (new.id, new.email, new.raw_user_meta_data->>'display_name');
-            return new;
-        end;
-        $$ language plpgsql security definer;
-      create trigger on_auth_user_created
-        after insert on auth.users
-        for each row execute procedure public.handle_new_user();
-      ```
-
-      ```sql
-      ALTER ROLE authenticator SET pgrst.db_aggregates_enabled = 'true';
-      NOTIFY pgrst, 'reload config';
-      ```
-
+   3. Goto Sql Editor & Run the sql scripts in file `/src/lib/supabase/setup.sql` to setup the database
    4. Go to connect & select `AppFrameworks > Next.js.` Copy the `.env.local` file.
+   5. Create a file at the root directory in `.env.local`
+   6. Paste the values copied from Supabase connection
 
-### Environment Setup
+### Resend
 
-1. Create a file at the root directory as `.env.local`
-2. Paste the values copied from Supabase connection
+1. Follow this guide [Resend With NextJS](https://resend.com/docs/send-with-nextjs)
+2. Add resend key as `RESEND_API_KEY=<YOUR_API_KEY>` in `.env.local`
+
+<!-- ## Cron Auth
+
+1. Generate a random secret key by yourself or use any online tool like [Generate Key](https://acte.ltd/utils/randomkeygen)
+2.  -->
 
 ### Getting Started
 

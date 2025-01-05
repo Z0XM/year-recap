@@ -22,9 +22,9 @@ export default function AuthProvider({
 }>) {
 	const supabaseClient = createClient();
 
-	const { login, logout } = useAuthStore();
+	const { login, logout, user } = useAuthStore();
 
-	const [isLoggedIn, setLoggedIn] = useState(false);
+	const [isLoggedIn, setLoggedIn] = useState(user ? true : false);
 
 	const router = useRouter();
 	const pathname = usePathname();

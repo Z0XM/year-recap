@@ -9,7 +9,6 @@ import { createClient } from '@/lib/supabase/client';
 import { DayDataSchema } from '@/lib/type-definitions/dayData';
 import { useAppInfo } from '@/store/appInfo';
 import { useRouter } from 'next/navigation';
-import emojiRegex from 'emoji-regex';
 
 async function addDayData(day_int: number, userId: string, formData: FormData) {
 	const supabase = createClient();
