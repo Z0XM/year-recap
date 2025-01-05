@@ -8,6 +8,7 @@ public.users (
     email text not null,
     "isActive" boolean not null default true,
     avatar text null,
+    accent_color text not null default '#eab308'::text,
     constraint users_pkey primary key (id)
 ) tablespace pg_default;          
 

@@ -130,9 +130,11 @@ export default function LoginPage({
 									<div className='grid gap-2'>
 										<div className='flex items-center'>
 											<Label htmlFor='password'>Password</Label>
-											<a href='#' className='ml-auto inline-block text-sm underline-offset-4 hover:underline'>
+											<Link
+												href={'/auth/reset-password'}
+												className='ml-auto inline-block text-sm underline-offset-4 hover:underline'>
 												Forgot your password?
-											</a>
+											</Link>
 										</div>
 										<Input name='password' type='password' required />
 									</div>
@@ -157,14 +159,14 @@ export default function LoginPage({
 								{mode === 'sign-up' ? (
 									<div className='mt-4 text-center text-sm'>
 										Already have an account?{' '}
-										<Link href='?mode=sign-in' className='underline underline-offset-4'>
+										<Link href='/p/login?mode=sign-in' className='underline underline-offset-4'>
 											Login instead
 										</Link>
 									</div>
 								) : (
 									<div className='mt-4 text-center text-sm'>
 										Don&apos;t have an account?{' '}
-										<Link href='?mode=sign-up' className='underline underline-offset-4'>
+										<Link href='/p/login?mode=sign-up' className='underline underline-offset-4'>
 											Sign up
 										</Link>
 									</div>

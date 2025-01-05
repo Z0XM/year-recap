@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 			return Response.json({ message: 'Unauthorized' }, { status: 401 });
 		}
 
-		const webAddress = process.env.WEB_ADDRESS;
+		const webAddress = process.env.NEXT_PUBLIC_WEB_ADDRESS;
 
 		if (!webAddress) {
 			return Response.json({ error: 'Web Address Not found' }, { status: 500 });

@@ -19,9 +19,9 @@ export default function DailyFormPage({ hasFilledFormFallback }: { hasFilledForm
 		return (
 			<div className='flex w-full items-center flex-col justify-center p-6 gap-16 md:p-10'>
 				<div className='flex flex-col w-3/4 md:w-1/2 text-center gap-4'>
-					<HelloUser today={today} display_name={user.display_name} />
+					<HelloUser today={today} display_name={user.display_name} accent_color={user.accent_color} />
 					<div className='text-xl'>
-						<span className='text-green-400'>Thankyou!</span> You have completed today&apos;s form.
+						<span className='text-primary'>Thankyou!</span> You have completed today&apos;s form.
 					</div>
 				</div>
 				<Suspense fallback={<></>}>{hasFilledFormFallback}</Suspense>
@@ -32,15 +32,15 @@ export default function DailyFormPage({ hasFilledFormFallback }: { hasFilledForm
 	return (
 		<div className='flex w-full items-center justify-center p-6 md:p-10'>
 			<div className='flex flex-col w-3/4 md:w-1/2 text-center gap-4'>
-				<HelloUser today={today} display_name={user.display_name} />
+				<HelloUser today={today} display_name={user.display_name} accent_color={user.accent_color} />
 				<DayForm dayInt={dayInt} userId={user!.id} />
 			</div>
 		</div>
 	);
 }
 
-function HelloUser(props: { today: Date; display_name?: string }) {
-	const { today, display_name } = props;
+function HelloUser(props: { today: Date; display_name: string; accent_color: string }) {
+	const { today, display_name, accent_color } = props;
 	return (
 		<>
 			<div className=' text-2xl font-semibold text-white'>
@@ -54,7 +54,11 @@ function HelloUser(props: { today: Date; display_name?: string }) {
 				<span className='text-lg text-gray-400'>{` / ${today.getFullYear() % 4 === 0 ? 366 : 365}`}</span>
 			</div>
 			<div className='text-2xl'>
-				How was your day {display_name && <span className='font-bold text-yellow-500 text-3xl'>{display_name}</span>} ?
+				How was your day{' '}
+				<span style={{ color: accent_color }} className={`font-bold text-3xl`}>
+					{display_name}
+				</span>{' '}
+				?
 			</div>
 			<Link href={'/about'} className='text-lg italic underline'>
 				Know more

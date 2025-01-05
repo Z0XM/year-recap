@@ -33,7 +33,7 @@ export default function AuthProvider({
 		if (isLoggedIn) return;
 		supabaseClient
 			.from('users')
-			.select()
+			.select('*')
 			.eq('id', userId)
 			.eq('isActive', true)
 			.single()
@@ -43,7 +43,9 @@ export default function AuthProvider({
 					login({
 						id: user.id,
 						email: user.email,
-						display_name: user.display_name
+						display_name: user.display_name,
+						accent_color: user.accent_color,
+						avatar: user.avatar
 					});
 					toast.success('Login successful!');
 				} else {
@@ -76,7 +78,7 @@ export default function AuthProvider({
 	}, [isLoggedIn]);
 
 	// console.log(!isLoggedIn && !pathname.startsWith('/p/login'));
-	if (!isLoggedIn && !pathname.startsWith('/p/login')) {
+	if (!isLoggedIn && !pathname.startsWith('/p/login') && !pathname.startsWith('/p/update-password')) {
 		return (
 			<div className='w-screen h-screen flex items-center justify-center'>
 				<LoadingSpinner size={48} />
