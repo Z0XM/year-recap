@@ -6,6 +6,7 @@ import { useAppInfo } from '@/store/appInfo';
 import { useAuthStore } from '@/store/auth';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 /**
  * [Wrapper to load user's day data]

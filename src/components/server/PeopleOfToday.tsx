@@ -6,8 +6,6 @@ export const revalidate = 60;
 export default async function PeopleOfToday() {
 	const supabase = await createClient();
 
-	console.log('Fetching People of Today');
-
 	const today = new Date(new Date().getTime() - 12 * 60 * 60 * 1000);
 	const dayInt = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 
@@ -36,11 +34,6 @@ export default async function PeopleOfToday() {
 		return <div className='w-screen h-screen flex justify-center items-center'>Something Went Wrong!</div>;
 	}
 
-	const hasFilledMap: { [key: string]: boolean } = {};
-	hasFilledForms.forEach((userData) => {
-		hasFilledMap[userData.user_id] = true;
-	});
-
 	const { data: dayCounts, error: dayCountError } = await supabase
 		.from('day_data')
 		.select('user_id, day_int.count()')
@@ -53,6 +46,11 @@ export default async function PeopleOfToday() {
 		console.error(dayCountError);
 		return <div className='w-screen h-screen flex justify-center items-center'>Something Went Wrong!</div>;
 	}
+
+	const hasFilledMap: { [key: string]: boolean } = {};
+	hasFilledForms.forEach((userData) => {
+		hasFilledMap[userData.user_id] = true;
+	});
 
 	const dayCountMap: { [key: string]: number } = {};
 	dayCounts.forEach((user) => {
