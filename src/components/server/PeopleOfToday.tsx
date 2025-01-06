@@ -1,8 +1,12 @@
 import { Badge } from '@/components/ui/badge';
 import { createClient } from '@/lib/supabase/server';
 
+export const revalidate = 60;
+
 export default async function PeopleOfToday() {
 	const supabase = await createClient();
+
+	console.log('Fetching People of Today');
 
 	const today = new Date(new Date().getTime() - 12 * 60 * 60 * 1000);
 	const dayInt = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();

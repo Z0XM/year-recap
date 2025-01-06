@@ -10,7 +10,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '../ui/dropdown-menu';
-import { Fire, Note, SignOut, UserCircle } from '@phosphor-icons/react';
+import { Fire, Note, SignOut, Stack, UserCircle } from '@phosphor-icons/react';
 import { useAppInfo } from '@/store/appInfo';
 import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
@@ -39,29 +39,37 @@ export default function UserProfile() {
 					{/* <Avatar name='Mukul Singh' round='100%' size={'37'} textSizeRatio={3} maxInitials={2} /> */}
 				</DropdownMenuTrigger>
 				<DropdownMenuContent className='mx-4'>
-					<DropdownMenuLabel className='text-center'>
+					<DropdownMenuLabel className='text-center text-lg'>
 						Hello, <span className='text-primary'>{user.display_name}</span>
 					</DropdownMenuLabel>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem>
-						<Fire className='text-primary' size={32} />
-						<span>{totalFilledDays}</span> / {today.getFullYear() % 4 === 0 ? 366 : 365}
-					</DropdownMenuItem>
-					<DropdownMenuItem className='cursor-pointer'>
-						<UserCircle className='text-primary' size={32} />
-						Profile
-					</DropdownMenuItem>
+					<Link href='/p/'>
+						<DropdownMenuItem className='text-md cursor-pointer'>
+							<Fire className='text-primary' size={32} />
+							<span>{totalFilledDays}</span> / {today.getFullYear() % 4 === 0 ? 366 : 365}
+						</DropdownMenuItem>
+					</Link>
+					<Link href='/p/profile/'>
+						<DropdownMenuItem className='cursor-pointer text-md'>
+							<UserCircle className='text-primary' size={32} />
+							Profile
+						</DropdownMenuItem>
+					</Link>
 					{/* <DropdownMenuItem className='cursor-pointer'>
 						<GearSix className='text-primary' size={32} />
 						Reminders
 					</DropdownMenuItem> */}
 					<Link href='https://forms.gle/rUh7TePrr5E8w15E6' target='_blank' rel='noopener noreferrer'>
-						<DropdownMenuItem className='cursor-pointer'>
+						<DropdownMenuItem className='cursor-pointer text-md'>
 							<Note className='text-primary' size={32} />
 							Feedback
 						</DropdownMenuItem>
 					</Link>
-					<DropdownMenuItem className='cursor-pointer' onClick={() => supabaseClient.auth.signOut()}>
+					<DropdownMenuItem className='cursor-pointer text-md'>
+						<Stack className='text-primary' size={32} />
+						Backlogs
+					</DropdownMenuItem>
+					<DropdownMenuItem className='cursor-pointer text-md' onClick={() => supabaseClient.auth.signOut()}>
 						<SignOut className='text-primary' size={32} />
 						Logout
 					</DropdownMenuItem>

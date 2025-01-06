@@ -32,17 +32,19 @@ export async function GET(req: NextRequest) {
 			return Response.json({ error: usersToSendFromDB.error }, { status: 500 });
 		}
 
-		const emailResponse = await resend.emails.send({
-			from: 'nopreply@howwasyourday.in',
-			to: usersToSendFromDB.data.map((x) => x.email),
-			// to: ['z0xm.dev@gmail.com'],
-			subject: 'How was your day ?',
-			react: await DailyReminderEmailTemplate({ webAddress }),
-			// headers: {
-			// 	'List-Unsubscribe': '/profile'
-			// },
-			scheduledAt: 'today at 8pm IST'
-		});
+		const emailResponse = await resend.batch.send(
+			usersToSendFromDB.data.map((user) => ({
+				from: 'nopreply@howwasyourday.in',
+				to: [user.email],
+				// to: ['z0xm.dev@gmail.com'],
+				subject: 'How was your day ?',
+				react: DailyReminderEmailTemplate({ webAddress }),
+				// headers: {
+				// 	'List-Unsubscribe': '/profile'
+				// },
+				scheduledAt: 'today at 8pm IST'
+			}))
+		);
 
 		if (emailResponse.error) {
 			return Response.json({ error: emailResponse.error }, { status: 500 });
