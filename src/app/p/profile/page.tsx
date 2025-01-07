@@ -22,8 +22,9 @@ export default function ProfilePage() {
 	async function onSave(formData: FormData) {
 		const supabase = createClient();
 
-		const validatedFields = profileSettingsSchema.pick({ display_name: true }).safeParse({
-			display_name: formData.get('display_name')
+		const validatedFields = profileSettingsSchema.pick({ display_name: true, accent_color: true }).safeParse({
+			display_name: formData.get('display_name'),
+			accent_color: formData.get('accent_color')
 		});
 
 		// If validation fails, return an error message
@@ -35,22 +36,25 @@ export default function ProfilePage() {
 
 		if (Object.keys(validatedFields.data).length === 0) return;
 
-		const { error } = await supabase.auth.updateUser({
-			data: {
-				display_name: validatedFields.data.display_name
-			}
-		});
+		if (validatedFields.data.display_name !== user?.display_name) {
+			const { error } = await supabase.auth.updateUser({
+				data: {
+					display_name: validatedFields.data.display_name
+				}
+			});
 
-		if (error) {
-			return {
-				message: error.message
-			};
+			if (error) {
+				return {
+					message: error.message
+				};
+			}
 		}
 
 		const { error: dbError } = await supabase
 			.from('users')
 			.update({
-				display_name: validatedFields.data.display_name
+				display_name: validatedFields.data.display_name,
+				accent_color: validatedFields.data.accent_color
 			})
 			.eq('id', user!.id);
 
