@@ -11,7 +11,7 @@ export default async function Navbar() {
 			<div className='flex gap-2 md:gap-6 items-end'>
 				{/* <Logout /> */}
 				<Link href={'/about'}>
-					<Badge variant={'outline'} className='md:text-lg'>
+					<Badge variant={'outline'} className='md:text-lg hover:text-primary'>
 						About us
 					</Badge>
 				</Link>
