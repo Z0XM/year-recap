@@ -7,3 +7,9 @@ export const profileSettingsSchema = z
 		accent_color: z.string().trim()
 	})
 	.partial();
+
+export const reminderSettingsSchema = z.object({
+	enable_daily: z.boolean(),
+	enable_weekly: z.boolean(),
+	enable_monthly: z.boolean()
+});

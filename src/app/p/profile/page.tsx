@@ -6,14 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/supabase/client';
 import { profileSettingsSchema } from '@/lib/type-definitions/settings';
-import { useAppInfo } from '@/store/appInfo';
 import { useAuthStore } from '@/store/auth';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 export default function ProfilePage() {
 	const { user, updateProfile } = useAuthStore();
-	const {} = useAppInfo();
 
 	const [errorMsg, setErrorMsg] = useState('');
 
@@ -109,7 +107,7 @@ export default function ProfilePage() {
 				</div>
 			</CardContent>
 			<CardFooter className='flex gap-4 w-full justify-between'>
-				<Button className='' variant='secondary'>
+				<Button className='' variant='secondary' type='reset'>
 					Cancel
 				</Button>
 				<Button className='' type='submit'>
