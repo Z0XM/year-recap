@@ -21,7 +21,7 @@ export default function DailyFormPage({ hasFilledFormFallback }: { hasFilledForm
         return (
             <div className="flex w-full flex-col items-center justify-center gap-16 py-6 md:px-10">
                 <div className="mx-4 flex flex-col gap-4 md:w-1/2">
-                    <HelloUser today={today} display_name={user.display_name} accent_color={user.accent_color} />
+                    <HelloUser today={today} display_name={user.display_name} />
                     <div className="text-xl">
                         <span className="text-primary">Thankyou!</span> You have completed today&apos;s form.
                     </div>
@@ -34,15 +34,15 @@ export default function DailyFormPage({ hasFilledFormFallback }: { hasFilledForm
     return (
         <div className="flex w-full items-center justify-center py-6 md:px-10">
             <div className="mx-4 flex flex-col gap-4 md:w-1/2">
-                <HelloUser today={today} display_name={user.display_name} accent_color={user.accent_color} />
-                <DayForm dayInt={dayInt} userId={user!.id} accent_color={user.accent_color} />
+                <HelloUser today={today} display_name={user.display_name} />
+                <DayForm dayInt={dayInt} userId={user!.id} />
             </div>
         </div>
     );
 }
 
-function HelloUser(props: { today: Date; display_name: string; accent_color: string }) {
-    const { today, display_name, accent_color } = props;
+function HelloUser(props: { today: Date; display_name: string }) {
+    const { today, display_name } = props;
     return (
         <>
             <Card className="">
@@ -50,7 +50,7 @@ function HelloUser(props: { today: Date; display_name: string; accent_color: str
                     <CardTitle>
                         <div className="text-2xl text-white">
                             {today.toLocaleDateString('en-IN', { weekday: 'long' })}
-                            <span style={{ color: accent_color }}>,</span>{' '}
+                            <span className="text-primary">,</span>{' '}
                             {today.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }).replace(/ /g, ' ')}
                         </div>
                     </CardTitle>
@@ -64,11 +64,7 @@ function HelloUser(props: { today: Date; display_name: string; accent_color: str
                 <Separator className="w-full" />
                 <CardContent className="px-6 py-4">
                     <div className="text-2xl">
-                        How was your day{' '}
-                        <span style={{ color: accent_color }} className={`text-3xl font-bold`}>
-                            {display_name}
-                        </span>{' '}
-                        ?
+                        How was your day <span className={`text-3xl font-bold text-primary`}>{display_name}</span> ?
                     </div>
                     {/* <Link href={'/about'} className='text-lg italic underline'>
 				Know more

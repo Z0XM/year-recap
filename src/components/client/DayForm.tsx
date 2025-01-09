@@ -56,8 +56,8 @@ async function addDayData(day_int: number, userId: string, formData: FormData) {
     }
 }
 
-export default function DayForm(props: { dayInt: number; userId: string; accent_color: string }) {
-    const { dayInt, userId, accent_color } = props;
+export default function DayForm(props: { dayInt: number; userId: string }) {
+    const { dayInt, userId } = props;
     const [errorMsg, setErrorMsg] = useState('');
 
     const { setHasFilledDayForm } = useAppInfo();
@@ -114,7 +114,7 @@ export default function DayForm(props: { dayInt: number; userId: string; accent_
                                         onValueChange={(v) => {
                                             setDayRating(v[0]);
                                         }}
-                                        accent_color={accent_color}
+                                        // accent_color={accent_color}
                                     />
                                     <div className="min-w-8 text-end">{dayRating}</div>
                                 </div>
@@ -206,10 +206,7 @@ export default function DayForm(props: { dayInt: number; userId: string; accent_
                     </Card>
 
                     <div className="col-span-8 flex w-full flex-col gap-2">
-                        <Label htmlFor="day_note" className="text-md">
-                            Write a note about today.
-                        </Label>
-                        <Textarea className="text-md px-2 py-1" name="day_note" placeholder="Today was a good day." />
+                        <Textarea className="text-md px-2 py-1" name="day_note" placeholder="Write a note about today." />
                     </div>
 
                     <Button type="submit" disabled={hasSubmitted} className="text-md col-span-8 w-full rounded p-2">
