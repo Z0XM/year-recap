@@ -10,6 +10,9 @@ import { DayDataSchema } from '@/lib/type-definitions/dayData';
 import { useAppInfo } from '@/store/appInfo';
 import { useRouter } from 'next/navigation';
 import { Slider } from '../ui/slider';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { listOfEmojis } from '@/lib/emojis';
 
 async function addDayData(day_int: number, userId: string, formData: FormData) {
     const supabase = createClient();
@@ -53,6 +56,7 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const [rating, setRating] = useState(7);
+    const [emoji, setEmoji] = useState('😄');
 
     return (
         <>
@@ -63,6 +67,7 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
                     e.preventDefault();
                     setHasSubmitted(true);
                     const formData = new FormData(e.target as HTMLFormElement);
+                    formData.append('day_emoji', emoji);
                     addDayData(dayInt, userId, formData).then((error) => {
                         if (error?.message) {
                             setErrorMsg(error.message);
@@ -74,67 +79,82 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
                     });
                 }}
             >
-                <div className="flex w-full flex-col gap-6">
+                <div className="grid w-full grid-cols-8 flex-col gap-x-4 gap-y-6">
                     {/* <div className='w-full flex gap-4'> */}
-                    <div className="flex w-full flex-col gap-2">
-                        <Label htmlFor="day_score" className="text-md">
-                            Rate your day out of 10.
-                        </Label>
-                        {/* <Input className="text-md" name="day_score" type="number" placeholder="7" min={-1} max={11} step={0.5} /> */}
-                        <div className="flex w-full gap-2">
-                            <Slider
-                                className="text-md"
-                                name="day_score"
-                                defaultValue={[rating]}
-                                max={11}
-                                min={-1}
-                                step={0.5}
-                                onValueChange={(v) => {
-                                    setRating(v[0]);
-                                }}
-                            />
-                            <div className="min-w-8 text-end">{rating}</div>
-                        </div>
-                    </div>
-                    {/* <div className='w-[20%] flex flex-col gap-2'>
-							<Label htmlFor='day_emoji' className='text-md'>
-								How did you feel?
-							</Label>
-							<Input
-								className='text-md'
-								name='day_emoji'
-								type='text'
-								placeholder='😁'
-								maxLength={1}
-								onChange={(e) => {
-									const regex = emojiRegex();
-									const input = e.currentTarget.value;
-									if (!regex.test(input)) {
-										e.currentTarget.value = '';
-									}
-								}}
-							/>
-						</div> */}
-                    {/* </div> */}
-                    <div className="flex w-full flex-col gap-2">
+                    <Card className="col-span-6">
+                        <CardHeader className="pb-0 pt-6">
+                            <CardTitle>
+                                <Label htmlFor="day_score" className="text-md">
+                                    Rate your day out of 10.
+                                </Label>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="pb-6 pt-0">
+                            <div className="flex w-full flex-col gap-2">
+                                {/* <Input className="text-md" name="day_score" type="number" placeholder="7" min={-1} max={11} step={0.5} /> */}
+                                <div className="flex w-full gap-2">
+                                    <Slider
+                                        className="text-md cursor-pointer"
+                                        name="day_score"
+                                        defaultValue={[rating]}
+                                        max={11}
+                                        min={-1}
+                                        step={0.5}
+                                        onValueChange={(v) => {
+                                            setRating(v[0]);
+                                        }}
+                                    />
+                                    <div className="min-w-8 text-end">{rating}</div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card className="col-span-2 flex items-center justify-center">
+                        <CardContent className="p-0">
+                            <Dialog>
+                                <DialogTrigger>
+                                    <div className="flex cursor-pointer items-center justify-center text-3xl">{emoji}</div>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle className="pb-2 text-2xl">Emote your day! {emoji}</DialogTitle>
+                                        <DialogDescription className="flex flex-wrap">
+                                            {listOfEmojis.map((emoji, i) => (
+                                                <Button
+                                                    variant={'ghost'}
+                                                    key={i}
+                                                    className="cursor-pointer p-0 text-3xl"
+                                                    onClick={() => setEmoji(emoji)}
+                                                >
+                                                    {emoji}
+                                                </Button>
+                                            ))}
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
+                        </CardContent>
+                    </Card>
+
+                    <div className="col-span-8 flex w-full flex-col gap-2">
                         <Label className="text-md" htmlFor="day_word">
                             Describe today in short.
                         </Label>
                         <Input className="text-md" name="day_word" type="text" placeholder="Average" />
                     </div>
-                    <div className="flex w-full flex-col gap-2">
+                    <div className="col-span-8 flex w-full flex-col gap-2">
                         <Label className="text-md" htmlFor="day_color">
                             Assign a color for today.
                         </Label>
                         <Input className="text-md" name="day_color" type="color" />
                     </div>
-                    <div className="flex w-full flex-col gap-2">
+                    <div className="col-span-8 flex w-full flex-col gap-2">
                         <Label className="text-md" htmlFor="day_person">
                             A person to remember for today.
                         </Label>
                         <Input className="text-md px-2 py-1" name="day_person" />
                     </div>
-                    <div className="flex w-full flex-col gap-2">
+                    <div className="col-span-8 flex w-full flex-col gap-2">
                         <Label htmlFor="day_note" className="text-md">
                             Write a note about today.
                         </Label>
