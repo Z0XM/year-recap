@@ -11,8 +11,18 @@ import { useAppInfo } from '@/store/appInfo';
 import { useRouter } from 'next/navigation';
 import { Slider } from '../ui/slider';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from '../ui/dialog';
 import { listOfEmojis } from '@/lib/emojis';
+import { HexColorPicker } from 'react-colorful';
 
 async function addDayData(day_int: number, userId: string, formData: FormData) {
     const supabase = createClient();
@@ -55,8 +65,9 @@ export default function DayForm(props: { dayInt: number; userId: string; accent_
 
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    const [rating, setRating] = useState(7);
-    const [emoji, setEmoji] = useState('😄');
+    const [dayRating, setDayRating] = useState(7);
+    const [dayEmoji, setDayEmoji] = useState('😄');
+    const [dayColor, setDayColor] = useState('#ffffff');
 
     return (
         <>
@@ -67,7 +78,8 @@ export default function DayForm(props: { dayInt: number; userId: string; accent_
                     e.preventDefault();
                     setHasSubmitted(true);
                     const formData = new FormData(e.target as HTMLFormElement);
-                    formData.append('day_emoji', emoji);
+                    formData.append('day_emoji', dayEmoji);
+                    formData.append('day_color', dayColor);
                     addDayData(dayInt, userId, formData).then((error) => {
                         if (error?.message) {
                             setErrorMsg(error.message);
@@ -79,7 +91,7 @@ export default function DayForm(props: { dayInt: number; userId: string; accent_
                     });
                 }}
             >
-                <div className="grid w-full grid-cols-8 flex-col gap-x-4 gap-y-6">
+                <div className="grid w-full grid-cols-8 flex-col gap-x-4 gap-y-4">
                     {/* <div className='w-full flex gap-4'> */}
                     <Card className="col-span-6">
                         <CardHeader className="pb-0 pt-6">
@@ -91,21 +103,20 @@ export default function DayForm(props: { dayInt: number; userId: string; accent_
                         </CardHeader>
                         <CardContent className="pb-6 pt-0">
                             <div className="flex w-full flex-col gap-2">
-                                {/* <Input className="text-md" name="day_score" type="number" placeholder="7" min={-1} max={11} step={0.5} /> */}
                                 <div className="flex w-full gap-2">
                                     <Slider
                                         className="text-md cursor-pointer"
                                         name="day_score"
-                                        defaultValue={[rating]}
+                                        defaultValue={[dayRating]}
                                         max={11}
                                         min={-1}
                                         step={0.5}
                                         onValueChange={(v) => {
-                                            setRating(v[0]);
+                                            setDayRating(v[0]);
                                         }}
                                         accent_color={accent_color}
                                     />
-                                    <div className="min-w-8 text-end">{rating}</div>
+                                    <div className="min-w-8 text-end">{dayRating}</div>
                                 </div>
                             </div>
                         </CardContent>
@@ -114,47 +125,86 @@ export default function DayForm(props: { dayInt: number; userId: string; accent_
                         <CardContent className="p-0">
                             <Dialog>
                                 <DialogTrigger>
-                                    <div className="flex cursor-pointer items-center justify-center text-3xl">{emoji}</div>
+                                    <div className="flex animate-bounce cursor-pointer items-center justify-center text-3xl">
+                                        {dayEmoji}
+                                    </div>
                                 </DialogTrigger>
-                                <DialogContent>
+                                <DialogContent className="flex flex-col items-center justify-center">
                                     <DialogHeader>
-                                        <DialogTitle className="pb-2 text-2xl">Emote your day! {emoji}</DialogTitle>
+                                        <DialogTitle className="pb-2 text-2xl">Emote your day! {dayEmoji}</DialogTitle>
                                         <DialogDescription className="flex flex-wrap">
                                             {listOfEmojis.map((emoji, i) => (
                                                 <Button
                                                     variant={'ghost'}
                                                     key={i}
                                                     className="cursor-pointer p-0 text-3xl"
-                                                    onClick={() => setEmoji(emoji)}
+                                                    onClick={() => setDayEmoji(emoji)}
                                                 >
                                                     {emoji}
                                                 </Button>
                                             ))}
                                         </DialogDescription>
                                     </DialogHeader>
+                                    <DialogFooter className="sm:justify-start">
+                                        <DialogClose asChild>
+                                            <Button type="button" variant="secondary">
+                                                Done!
+                                            </Button>
+                                        </DialogClose>
+                                    </DialogFooter>
                                 </DialogContent>
                             </Dialog>
                         </CardContent>
                     </Card>
+                    <Card className="col-span-8">
+                        <CardContent className="pt-6">
+                            <div className="flex w-full flex-col gap-2">
+                                <Input
+                                    className="text-md"
+                                    name="day_word"
+                                    type="text"
+                                    maxLength={64}
+                                    placeholder="Describe today in short."
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card className="col-span-2 flex items-center justify-center">
+                        <CardContent className="p-0">
+                            <Dialog>
+                                <DialogTrigger className="flex items-center justify-center">
+                                    <div style={{ backgroundColor: dayColor }} className="h-[35px] w-[35px] rounded-full"></div>
+                                </DialogTrigger>
+                                <DialogContent className="flex flex-col items-center justify-center">
+                                    <DialogHeader>
+                                        <DialogTitle className="pb-2 text-2xl">Color your day!</DialogTitle>
+                                    </DialogHeader>
+                                    <HexColorPicker color={dayColor} onChange={setDayColor} />
+                                    <DialogFooter className="sm:justify-start">
+                                        <DialogClose asChild>
+                                            <Button type="button" variant="secondary">
+                                                Done!
+                                            </Button>
+                                        </DialogClose>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
+                        </CardContent>
+                    </Card>
+                    <Card className="col-span-6">
+                        <CardContent className="pt-6">
+                            <div className="flex w-full flex-col gap-2">
+                                <Input
+                                    className="text-md"
+                                    name="day_person"
+                                    type="text"
+                                    maxLength={64}
+                                    placeholder="A person to remember."
+                                />
+                            </div>
+                        </CardContent>
+                    </Card>
 
-                    <div className="col-span-8 flex w-full flex-col gap-2">
-                        <Label className="text-md" htmlFor="day_word">
-                            Describe today in short.
-                        </Label>
-                        <Input className="text-md" name="day_word" type="text" placeholder="Average" />
-                    </div>
-                    <div className="col-span-8 flex w-full flex-col gap-2">
-                        <Label className="text-md" htmlFor="day_color">
-                            Assign a color for today.
-                        </Label>
-                        <Input className="text-md" name="day_color" type="color" />
-                    </div>
-                    <div className="col-span-8 flex w-full flex-col gap-2">
-                        <Label className="text-md" htmlFor="day_person">
-                            A person to remember for today.
-                        </Label>
-                        <Input className="text-md px-2 py-1" name="day_person" />
-                    </div>
                     <div className="col-span-8 flex w-full flex-col gap-2">
                         <Label htmlFor="day_note" className="text-md">
                             Write a note about today.
