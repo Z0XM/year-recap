@@ -19,7 +19,7 @@ export default function DailyFormPage({ hasFilledFormFallback }: { hasFilledForm
 
     if (hasFilledDayForm) {
         return (
-            <div className="flex w-full flex-col items-center justify-center gap-16 py-6 md:px-10">
+            <div className="flex w-full flex-col items-center justify-center py-6 md:px-10">
                 <div className="mx-4 flex flex-col gap-4 md:w-1/2">
                     <HelloUser today={today} display_name={user.display_name} />
                     <div className="text-xl">
