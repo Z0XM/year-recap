@@ -58,7 +58,7 @@ export default async function PeopleOfToday() {
 	});
 
 	return (
-		<div className='flex flex-row gap-4 flex-wrap max-w-[90%] justify-center'>
+		<div className='flex flex-row gap-4 flex-wrap max-w-[90%] justify-center text-center'>
 			{userArray
 				.sort((a, b) => (a.display_name as string).localeCompare(b.display_name as string))
 				.map((user, index) => {
