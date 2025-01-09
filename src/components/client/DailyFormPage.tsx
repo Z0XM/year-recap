@@ -45,7 +45,7 @@ function HelloUser(props: { today: Date; display_name: string; accent_color: str
     const { today, display_name, accent_color } = props;
     return (
         <>
-            <Card className="backdrop-blur-sm">
+            <Card className="">
                 <CardHeader className="px-6 py-4">
                     <CardTitle>
                         <div className="text-2xl text-white">
