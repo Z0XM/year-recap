@@ -66,7 +66,7 @@ export default async function PeopleOfToday() {
     return (
         <div className="flex max-w-[90%] flex-row flex-wrap justify-center gap-4 pt-4 text-center">
             {userArray
-                .sort((a, b) => (a.display_name as string).localeCompare(b.display_name as string))
+                .sort((a, b) => dayCountMap[b.id] - dayCountMap[a.id])
                 .map((user, index) => {
                     if (hasFilledMap[user.id]) {
                         return (
