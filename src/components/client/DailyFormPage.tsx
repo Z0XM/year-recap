@@ -35,7 +35,7 @@ export default function DailyFormPage({ hasFilledFormFallback }: { hasFilledForm
         <div className="flex w-full items-center justify-center py-6 md:px-10">
             <div className="mx-4 flex flex-col gap-4 md:w-1/2">
                 <HelloUser today={today} display_name={user.display_name} accent_color={user.accent_color} />
-                <DayForm dayInt={dayInt} userId={user!.id} />
+                <DayForm dayInt={dayInt} userId={user!.id} accent_color={user.accent_color} />
             </div>
         </div>
     );
