@@ -47,7 +47,7 @@ export default function NotificationTest() {
 
     return (
         <main className="p-10">
-            <h1 className="mb-4 text-4xl font-bold">Firebase Cloud Messaging Demo</h1>
+            {/* <h1 className="mb-4 text-4xl font-bold">Firebase Cloud Messaging Demo</h1> */}
 
             {notificationPermissionStatus === 'granted' ? (
                 <p>Permission to receive notifications has been granted.</p>
@@ -55,9 +55,9 @@ export default function NotificationTest() {
                 <p>You have not granted permission to receive notifications. Please enable notifications in your browser settings.</p>
             ) : null}
 
-            <Button disabled={!token} className="mt-5" onClick={handleTestNotification}>
+            {/* <Button disabled={!token} className="mt-5" onClick={handleTestNotification}>
                 Send Test Notification
-            </Button>
+            </Button> */}
         </main>
     );
 }
