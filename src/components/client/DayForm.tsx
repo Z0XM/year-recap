@@ -23,10 +23,9 @@ import {
 } from '../ui/dialog';
 import { listOfEmojis } from '@/lib/emojis';
 import { HexColorPicker } from 'react-colorful';
+import { toast } from 'sonner';
 
-async function addDayData(day_int: number, userId: string, formData: FormData) {
-    const supabase = createClient();
-
+function formDataToJSON(formData: FormData) {
     const metadata: { [key: string]: unknown } = {};
 
     for (const [key, value] of formData.entries()) {
@@ -34,6 +33,14 @@ async function addDayData(day_int: number, userId: string, formData: FormData) {
             metadata[key] = value;
         }
     }
+
+    return metadata;
+}
+
+async function addDayData(day_int: number, userId: string, formData: FormData) {
+    const supabase = createClient();
+
+    const metadata = formDataToJSON(formData);
 
     const validatedFields = DayDataSchema.safeParse({
         day_int: day_int,
@@ -47,27 +54,61 @@ async function addDayData(day_int: number, userId: string, formData: FormData) {
         };
     }
 
-    const { data, error } = await supabase.from('day_data').insert(validatedFields.data);
+    const existingData = await supabase.from('day_data').select('id').eq('day_int', day_int).eq('user_id', userId).single();
 
-    if (error) {
+    if (existingData.error) {
         return {
-            message: error.message
+            message: existingData.error.message
         };
+    }
+
+    if (existingData.data) {
+        const { error } = await supabase.from('day_data').update(validatedFields.data).eq('id', existingData.data.id);
+
+        if (error) {
+            return {
+                message: error.message
+            };
+        }
+    } else {
+        const { error } = await supabase.from('day_data').insert(validatedFields.data);
+
+        if (error) {
+            return {
+                message: error.message
+            };
+        }
     }
 }
 
-export default function DayForm(props: { dayInt: number; userId: string }) {
+export default function DayForm(props: { dayInt: number; userId: string; initialValues: { [key: string]: any } }) {
     const { dayInt, userId } = props;
     const [errorMsg, setErrorMsg] = useState('');
 
-    const { setHasFilledDayForm } = useAppInfo();
+    const { setHasFilledDayForm, setDayMetadata } = useAppInfo();
     const router = useRouter();
 
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    const [dayRating, setDayRating] = useState(7);
-    const [dayEmoji, setDayEmoji] = useState('😄');
-    const [dayColor, setDayColor] = useState('#ffffff');
+    const defaultValues = {
+        day_score: 7,
+        day_emoji: '😄',
+        day_color: '#ffffff',
+        day_note: '',
+        day_person: '',
+        day_word: ''
+    };
+
+    const getMetadata = (key: keyof typeof defaultValues) => {
+        if (props.initialValues[key] === undefined || props.initialValues[key] === null) {
+            return defaultValues[key];
+        }
+        return props.initialValues[key];
+    };
+
+    const [dayRating, setDayRating] = useState(getMetadata('day_score'));
+    const [dayEmoji, setDayEmoji] = useState(getMetadata('day_emoji'));
+    const [dayColor, setDayColor] = useState(getMetadata('day_color'));
 
     return (
         <>
@@ -85,8 +126,11 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
                             setErrorMsg(error.message);
                             setHasSubmitted(false);
                         } else {
+                            console.log('Day data added successfully');
+                            toast.success('Submitted successfully');
                             setHasFilledDayForm(true);
-                            router.refresh();
+                            setDayMetadata(formDataToJSON(formData));
+                            router.push('/p');
                         }
                     });
                 }}
@@ -165,6 +209,7 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
                                     type="text"
                                     maxLength={64}
                                     placeholder="Describe today in short."
+                                    defaultValue={getMetadata('day_word')}
                                 />
                             </div>
                         </CardContent>
@@ -200,13 +245,19 @@ export default function DayForm(props: { dayInt: number; userId: string }) {
                                     type="text"
                                     maxLength={64}
                                     placeholder="A person to remember."
+                                    defaultValue={getMetadata('day_person')}
                                 />
                             </div>
                         </CardContent>
                     </Card>
 
                     <div className="col-span-8 flex w-full flex-col gap-2">
-                        <Textarea className="text-md px-2 py-1" name="day_note" placeholder="Write a note about today." />
+                        <Textarea
+                            className="text-md px-2 py-1"
+                            name="day_note"
+                            placeholder="Write a note about today."
+                            defaultValue={getMetadata('day_note')}
+                        />
                     </div>
 
                     <Button type="submit" disabled={hasSubmitted} className="text-md col-span-8 w-full rounded p-2">
