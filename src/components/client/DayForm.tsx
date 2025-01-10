@@ -54,7 +54,7 @@ async function addDayData(day_int: number, userId: string, formData: FormData) {
         };
     }
 
-    const existingData = await supabase.from('day_data').select('id').eq('day_int', day_int).eq('user_id', userId).single();
+    const existingData = await supabase.from('day_data').select('id').eq('day_int', day_int).eq('user_id', userId);
 
     if (existingData.error) {
         return {
@@ -62,8 +62,8 @@ async function addDayData(day_int: number, userId: string, formData: FormData) {
         };
     }
 
-    if (existingData.data) {
-        const { error } = await supabase.from('day_data').update(validatedFields.data).eq('id', existingData.data.id);
+    if (existingData.data.length > 0) {
+        const { error } = await supabase.from('day_data').update(validatedFields.data).eq('id', existingData.data[0].id);
 
         if (error) {
             return {
