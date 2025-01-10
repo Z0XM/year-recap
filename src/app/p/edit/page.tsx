@@ -1,5 +1,4 @@
 import DailyFormPage from '@/components/client/DailyFormPage';
-import PeopleOfToday from '@/components/server/PeopleOfToday';
 
 /**
  * [Server Rendered Page]
@@ -11,5 +10,5 @@ import PeopleOfToday from '@/components/server/PeopleOfToday';
  *
  */
 export default function Page() {
-    return <DailyFormPage mode="fill" hasFilledFormFallback={<PeopleOfToday />} />;
+    return <DailyFormPage mode="edit" />;
 }
