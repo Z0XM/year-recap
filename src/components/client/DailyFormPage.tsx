@@ -47,9 +47,11 @@ export default function DailyFormPage(props: DailyFormProps) {
         <div className="flex w-full items-center justify-center py-6 md:px-10">
             <div className="mx-4 flex flex-col gap-4 md:w-1/2">
                 <HelloUser today={today} display_name={user.display_name} />
-                <div className="text-xl">
-                    <span className="text-primary">You are editing!</span> You have completed today&apos;s form.
-                </div>
+                {props.mode === 'edit' && (
+                    <div className="text-xl">
+                        <span className="text-primary">You are editing!</span> You have completed today&apos;s form.
+                    </div>
+                )}
                 <DayForm dayInt={dayInt} userId={user!.id} initialValues={dayMetadata} />
             </div>
         </div>
