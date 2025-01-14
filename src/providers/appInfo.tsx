@@ -4,9 +4,8 @@ import { LoadingSpinner } from '@/components/ui/loadingSpinner';
 import { createClient } from '@/lib/supabase/client';
 import { useAppInfo } from '@/store/appInfo';
 import { useAuthStore } from '@/store/auth';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 
 /**
  * [Wrapper to load user's day data]
@@ -21,8 +20,6 @@ export default function AppInfoProvider({
     children: React.ReactNode;
 }>) {
     const supabaseClient = createClient();
-
-    const router = useRouter();
 
     const { user } = useAuthStore();
     const { setDayInt, setHasFilledDayForm, setDayMetadata, setTotalFilledDays } = useAppInfo();
@@ -63,16 +60,6 @@ export default function AppInfoProvider({
                 });
         }
     }, [user]);
-
-    useEffect(() => {
-        if (!isLoaded && !pathname.startsWith('/p/login')) {
-            const timer = setTimeout(() => {
-                console.log('Refreshing Page...');
-                router.refresh();
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [isLoaded]);
 
     if (!isLoaded && !pathname.startsWith('/p/login')) {
         return (

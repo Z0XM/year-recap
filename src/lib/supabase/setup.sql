@@ -63,3 +63,12 @@ create table
 -- migration query to seed existing users
 insert into public.user_reminder_settings (user_id) (select id as user_id from users);
 
+-- create notifications table
+create table
+  public.notification_tokens (
+    id uuid not null default gen_random_uuid (),
+    created_at timestamp with time zone not null default now(),
+    token text not null,
+    constraint notification_tokens_pkey primary key (id),
+    constraint notification_tokens_token_key unique (token)
+  ) tablespace pg_default;

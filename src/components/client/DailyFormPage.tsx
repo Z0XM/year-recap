@@ -33,7 +33,7 @@ export default function DailyFormPage(props: DailyFormProps) {
                     <HelloUser today={today} display_name={user.display_name} />
                     <div className="text-xl">
                         <span className="text-primary">Thankyou!</span> You have completed today&apos;s form.
-                        <Link href="/p/edit" className="mx-2 text-lg underline">
+                        <Link href="/p/edit" className="mx-2 text-lg underline duration-200 hover:text-primary">
                             Click here to edit
                         </Link>
                     </div>

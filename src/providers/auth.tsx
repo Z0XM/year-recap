@@ -68,7 +68,12 @@ export default function AuthProvider({
 
     useEffect(() => {
         const { data: authListener } = supabaseClient.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN' && session?.user) {
+            // console.log(event, session);
+            if (event === 'INITIAL_SESSION') {
+                if (session?.user.id) {
+                    onSignIn(session.user.id);
+                }
+            } else if (event === 'SIGNED_IN' && session?.user) {
                 onSignIn(session.user.id);
             } else if (event === 'SIGNED_OUT') {
                 onSignOut();
@@ -80,16 +85,6 @@ export default function AuthProvider({
         return () => {
             authListener.subscription.unsubscribe();
         };
-    }, [isLoggedIn]);
-
-    useEffect(() => {
-        if (!isLoggedIn && !pathname.startsWith('/p/login') && !pathname.startsWith('/p/update-password')) {
-            const timer = setTimeout(() => {
-                console.log('Refreshing Page...');
-                router.refresh();
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
     }, [isLoggedIn]);
 
     if (!isLoggedIn && !pathname.startsWith('/p/login') && !pathname.startsWith('/p/update-password')) {

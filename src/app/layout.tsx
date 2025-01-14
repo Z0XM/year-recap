@@ -27,9 +27,9 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${font_sour.className}`}>
-                {/* <Notifications /> */}
-                <Navbar />
                 <Toaster />
+                <Navbar />
+                <Notifications />
                 {children}
             </body>
         </html>

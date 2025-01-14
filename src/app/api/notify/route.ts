@@ -1,5 +1,5 @@
+import { createClient } from '@/lib/supabase/server';
 import admin from 'firebase-admin';
-import { Message } from 'firebase-admin/messaging';
 import { NextRequest, NextResponse } from 'next/server';
 
 // Initialize Firebase Admin SDK
@@ -14,24 +14,41 @@ if (!admin.apps.length) {
     });
 }
 
-export async function POST(request: NextRequest) {
-    const { token, title, message, link } = await request.json();
+export async function GET(request: NextRequest) {
+    const authHeader = request.headers.get('authorization');
+    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+        return Response.json({ message: 'Unauthorized' }, { status: 401 });
+    }
 
-    const payload: Message = {
-        token,
-        notification: {
-            title: title,
-            body: message
-        },
-        webpush: link && {
-            fcmOptions: {
-                link
-            }
-        }
-    };
+    const webAddress = process.env.NEXT_PUBLIC_WEB_ADDRESS;
+
+    if (!webAddress) {
+        return Response.json({ error: 'Web Address Not found' }, { status: 500 });
+    }
+
+    const supabase = await createClient();
+
+    const tokensResult = await supabase.from('notification_tokens').select('token').limit(100);
+
+    if (tokensResult.error) {
+        return NextResponse.json({ success: false, error: tokensResult.error });
+    }
+
+    const tokens = tokensResult.data.map((x) => x.token);
 
     try {
-        await admin.messaging().send(payload);
+        await admin.messaging().sendEachForMulticast({
+            tokens,
+            notification: {
+                title: 'How was your day ?',
+                body: 'Take out some time to write about your day!'
+            },
+            webpush: {
+                fcmOptions: {
+                    link: webAddress
+                }
+            }
+        });
 
         return NextResponse.json({ success: true, message: 'Notification sent!' });
     } catch (error) {
