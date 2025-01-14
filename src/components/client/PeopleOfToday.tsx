@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../ui/loadingSpinner';
 import { Security } from '@/lib/encryption';
+import { useAppInfo } from '@/store/appInfo';
 
 const fetchPeopleOfToday = async ({ dayInt }: { dayInt: number }) => {
     const supabase = createClient();
@@ -49,8 +50,7 @@ const fetchPeopleOfToday = async ({ dayInt }: { dayInt: number }) => {
 };
 
 export default function PeopleOfToday() {
-    const today = new Date(new Date().getTime() - 12 * 60 * 60 * 1000);
-    const dayInt = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    const { dayInt } = useAppInfo();
 
     const [peopleOfToday, setPeopleOfToday] = useState<
         | { hasLoaded: false }

@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const secretKey = process.env.CRYPTO_KEY ?? 'secret';
+const secretKey = process.env.NEXT_PUBLIC_CRYPTO_KEY ?? 'secret';
 
 export class Security {
     public static encrypt(data: string) {
