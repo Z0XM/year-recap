@@ -1,8 +1,10 @@
+'use client';
+
 import DailyFormPage from '@/components/client/DailyFormPage';
-import PeopleOfToday from '@/components/server/PeopleOfToday';
+import PeopleOfToday from '@/components/client/PeopleOfToday';
 
 /**
- * [Server Rendered Page]
+ * [Client Rendered Page]
  * [Authentication Required]
  * [Path: /p/*]
  *
