@@ -24,6 +24,7 @@ import {
 import { listOfEmojis } from '@/lib/emojis';
 import { HexColorPicker } from 'react-colorful';
 import { toast } from 'sonner';
+import { Security } from '@/lib/encryption';
 
 function formDataToJSON(formData: FormData) {
     const metadata: { [key: string]: unknown } = {};
@@ -62,8 +63,12 @@ async function addDayData(day_int: number, userId: string, formData: FormData) {
         };
     }
 
+    const encryptedMetadata = Security.encryptKeys(validatedFields.data.metadata);
     if (existingData.data.length > 0) {
-        const { error } = await supabase.from('day_data').update(validatedFields.data).eq('id', existingData.data[0].id);
+        const { error } = await supabase
+            .from('day_data')
+            .update({ ...validatedFields.data, metadata: encryptedMetadata })
+            .eq('id', existingData.data[0].id);
 
         if (error) {
             return {
@@ -71,7 +76,7 @@ async function addDayData(day_int: number, userId: string, formData: FormData) {
             };
         }
     } else {
-        const { error } = await supabase.from('day_data').insert(validatedFields.data);
+        const { error } = await supabase.from('day_data').insert({ ...validatedFields.data, metadata: encryptedMetadata });
 
         if (error) {
             return {

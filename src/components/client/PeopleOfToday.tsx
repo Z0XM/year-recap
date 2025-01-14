@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { createClient } from '@/lib/supabase/client';
 import { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../ui/loadingSpinner';
+import { Security } from '@/lib/encryption';
 
 const fetchPeopleOfToday = async ({ dayInt }: { dayInt: number }) => {
     const supabase = createClient();
@@ -34,7 +35,7 @@ const fetchPeopleOfToday = async ({ dayInt }: { dayInt: number }) => {
 
     const metadataMap: { [key: string]: any } = {};
     hasFilledFormList.data.forEach((userData) => {
-        metadataMap[userData.user_id] = userData.metadata;
+        metadataMap[userData.user_id] = Security.decryptedKeys(userData.metadata);
     });
 
     return {

@@ -1,6 +1,7 @@
 'use client';
 
 import { LoadingSpinner } from '@/components/ui/loadingSpinner';
+import { Security } from '@/lib/encryption';
 import { createClient } from '@/lib/supabase/client';
 import { useAppInfo } from '@/store/appInfo';
 import { useAuthStore } from '@/store/auth';
@@ -41,7 +42,7 @@ export default function AppInfoProvider({
                 .then(({ data }) => {
                     if (data && data.length > 0) {
                         setHasFilledDayForm(true);
-                        setDayMetadata(data[0].metadata);
+                        setDayMetadata(Security.decryptedKeys(data[0].metadata));
                     } else {
                         setHasFilledDayForm(false);
                         setDayMetadata({});
