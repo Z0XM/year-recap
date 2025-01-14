@@ -45,7 +45,7 @@ export default async function AboutPage() {
                     <Accordion className="w-full" type="multiple">
                         <AccordionItem value="1">
                             <AccordionTrigger>What about data privacy ? </AccordionTrigger>
-                            <AccordionContent>Data is not secured as of now. Will be encrypted soon.</AccordionContent>
+                            <AccordionContent>All of your submitted data is encrypted on the backend.</AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="2">
                             <AccordionTrigger>What if some days or weeks are missed?</AccordionTrigger>
