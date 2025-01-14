@@ -75,12 +75,23 @@ export default function AuthProvider({
             }
         });
 
+        // supabaseClient.auth.startAutoRefresh();
+
         return () => {
             authListener.subscription.unsubscribe();
         };
     }, [isLoggedIn]);
 
-    // console.log(!isLoggedIn && !pathname.startsWith('/p/login'));
+    useEffect(() => {
+        if (!isLoggedIn && !pathname.startsWith('/p/login') && !pathname.startsWith('/p/update-password')) {
+            const timer = setTimeout(() => {
+                console.log('Refreshing Page...');
+                router.refresh();
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [isLoggedIn]);
+
     if (!isLoggedIn && !pathname.startsWith('/p/login') && !pathname.startsWith('/p/update-password')) {
         return (
             <div className="flex h-screen w-screen items-center justify-center">
