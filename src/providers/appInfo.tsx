@@ -1,7 +1,7 @@
 'use client';
 
 import { LoadingSpinner } from '@/components/ui/loadingSpinner';
-import { Security } from '@/lib/encryption';
+import { SecurityClient } from '@/lib/encryption';
 import { createClient } from '@/lib/supabase/client';
 import { useAppInfo } from '@/store/appInfo';
 import { useAuthStore } from '@/store/auth';
@@ -34,31 +34,25 @@ export default function AppInfoProvider({
 
         setDayInt(dayInt);
         if (user) {
-            supabaseClient
-                .from('day_data')
-                .select('metadata')
-                .eq('user_id', user.id)
-                .eq('day_int', dayInt)
-                .then(({ data }) => {
-                    if (data && data.length > 0) {
-                        setHasFilledDayForm(true);
-                        setDayMetadata(Security.decryptedKeys(data[0].metadata));
-                    } else {
-                        setHasFilledDayForm(false);
-                        setDayMetadata({});
-                    }
-                    setLoaded(true);
-                });
+            const loadUserInfo = async () => {
+                const { data } = await supabaseClient.from('day_data').select('metadata').eq('user_id', user.id).eq('day_int', dayInt);
+                if (data && data.length > 0) {
+                    setHasFilledDayForm(true);
+                    const metadata = await SecurityClient.decryptKeys(data[0].metadata);
+                    setDayMetadata(metadata);
+                } else {
+                    setHasFilledDayForm(false);
+                    setDayMetadata({});
+                }
+                setLoaded(true);
 
-            supabaseClient
-                .from('day_data')
-                .select('', { count: 'exact', head: true })
-                .eq('user_id', user.id)
-                .then(({ count }) => {
-                    if (count !== null) {
-                        setTotalFilledDays(count);
-                    }
-                });
+                const { count } = await supabaseClient.from('day_data').select('', { count: 'exact', head: true }).eq('user_id', user.id);
+                if (count !== null) {
+                    setTotalFilledDays(count);
+                }
+            };
+
+            loadUserInfo().then(console.log).catch(console.error);
         }
     }, [user]);
 

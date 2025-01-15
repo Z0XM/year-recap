@@ -24,7 +24,7 @@ import {
 import { listOfEmojis } from '@/lib/emojis';
 import { HexColorPicker } from 'react-colorful';
 import { toast } from 'sonner';
-import { Security } from '@/lib/encryption';
+import { SecurityClient } from '@/lib/encryption';
 
 function formDataToJSON(formData: FormData) {
     const metadata: { [key: string]: unknown } = {};
@@ -63,7 +63,7 @@ async function addDayData(day_int: number, userId: string, formData: FormData) {
         };
     }
 
-    const encryptedMetadata = Security.encryptKeys(validatedFields.data.metadata);
+    const encryptedMetadata = await SecurityClient.encryptKeys(validatedFields.data.metadata);
     if (existingData.data.length > 0) {
         const { error } = await supabase
             .from('day_data')

@@ -8,6 +8,10 @@ export async function updateSession(request: NextRequest) {
             url.pathname = '/maintenance/';
             return NextResponse.redirect(url);
         } else return NextResponse.next({ request });
+    } else if (request.nextUrl.pathname.startsWith('/maintenance')) {
+        const url = request.nextUrl.clone();
+        url.pathname = '/';
+        return NextResponse.redirect(url);
     }
 
     let supabaseResponse = NextResponse.next({
