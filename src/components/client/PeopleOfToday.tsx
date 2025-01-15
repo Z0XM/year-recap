@@ -101,7 +101,7 @@ export default function PeopleOfToday() {
                             className="border-green-500 px-4 py-1 text-xl"
                         >
                             <div className="flex">
-                                <span className="mr-2" style={{ color: user.accent_color }}>
+                                <span className="mr-2" style={{ color: peopleOfToday.data.metadataMap[user.id].day_color }}>
                                     {user.display_name}
                                 </span>
                                 {/* {dayCountMap[user.id] ?? 0}🔥 */}
