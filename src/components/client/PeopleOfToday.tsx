@@ -98,7 +98,7 @@ export default function PeopleOfToday() {
                             key={index}
                             // style={{ borderColor: user.accent_color }}
                             variant={'outline'}
-                            className="border-green-500 px-4 py-1 text-xl"
+                            className="text-md border-green-500 px-4 py-1 md:text-xl"
                         >
                             <div className="flex">
                                 <span className="mr-2" style={{ color: peopleOfToday.data.metadataMap[user.id].day_color }}>
@@ -112,7 +112,7 @@ export default function PeopleOfToday() {
                     );
                 } else {
                     return (
-                        <Badge key={index} variant={'outline'} className="text-xl">
+                        <Badge key={index} variant={'outline'} className="text-md md:text-xl">
                             {user.display_name}
                             {/* {dayCountMap[user.id] ?? 0}🔥 */}
                             {/* <span className="text-sm text-gray-300">/{today.getFullYear() % 4 === 0 ? 366 : 365}</span> */}

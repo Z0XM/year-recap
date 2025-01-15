@@ -65,10 +65,10 @@ export default function UserProfile() {
                             Feedback
                         </DropdownMenuItem>
                     </Link>
-                    <DropdownMenuItem className="text-md cursor-pointer">
+                    {/* <DropdownMenuItem className="text-md cursor-pointer">
                         <Stack className="text-primary" size={32} />
                         Backlogs
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                     <DropdownMenuItem className="text-md cursor-pointer" onClick={() => supabaseClient.auth.signOut()}>
                         <SignOut className="text-primary" size={32} />
                         Logout
