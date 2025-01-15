@@ -101,8 +101,8 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
         day_color: '#ffffff',
         day_note: '',
         day_person: '',
-        day_word: ''
-        // day_photo: ''
+        day_word: '',
+        day_public_note: ''
     };
 
     const getMetadata = (key: keyof typeof defaultValues) => {
@@ -257,7 +257,6 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                             </div>
                         </CardContent>
                     </Card>
-
                     <div className="col-span-8 flex w-full flex-col gap-2">
                         <Textarea
                             className="text-md px-2 py-1"
@@ -266,6 +265,17 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                             defaultValue={getMetadata('day_note')}
                         />
                     </div>
+                    <div className="col-span-8 flex w-full flex-col gap-2">
+                        <Input
+                            className="text-md px-2 py-1"
+                            name="day_public_note"
+                            placeholder="Write a public note."
+                            type="text"
+                            maxLength={64}
+                            defaultValue={getMetadata('day_public_note')}
+                        />
+                    </div>
+
                     {/* <div className="col-span-8 flex items-center justify-center gap-4">
                         <Label htmlFor="day_photo" className="w-full">
                             Photo of the your day

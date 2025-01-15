@@ -90,36 +90,59 @@ export default function PeopleOfToday() {
     }
 
     return (
-        <div className="flex max-w-[90%] flex-row flex-wrap justify-center gap-4 pt-4 text-center">
-            {peopleOfToday.data.userList.map((user, index) => {
-                if (peopleOfToday.data.hasFilledMap[user.id]) {
-                    return (
-                        <Badge
-                            key={index}
-                            // style={{ borderColor: user.accent_color }}
-                            variant={'outline'}
-                            className="text-md border-green-500 px-4 py-1 md:text-xl"
-                        >
-                            <div className="flex">
-                                <span className="mr-2" style={{ color: peopleOfToday.data.metadataMap[user.id].day_color }}>
-                                    {user.display_name}
-                                </span>
+        <div className="flex flex-col items-center">
+            <div className="flex max-w-[90%] flex-row flex-wrap justify-center gap-4 pt-4 text-center">
+                {peopleOfToday.data.userList.map((user, index) => {
+                    if (peopleOfToday.data.hasFilledMap[user.id]) {
+                        return (
+                            <Badge
+                                key={index}
+                                // style={{ borderColor: user.accent_color }}
+                                variant={'outline'}
+                                className="text-md border-green-500 px-4 py-1 md:text-xl"
+                            >
+                                <div className="flex">
+                                    <span className="mr-2" style={{ color: peopleOfToday.data.metadataMap[user.id].day_color }}>
+                                        {user.display_name}
+                                    </span>
+                                    {/* {dayCountMap[user.id] ?? 0}🔥 */}
+                                    {peopleOfToday.data.metadataMap[user.id].day_emoji}
+                                </div>
+                                {/* <span className="text-sm text-gray-800">/{today.getFullYear() % 4 === 0 ? 366 : 365}</span> */}
+                            </Badge>
+                        );
+                    } else {
+                        return (
+                            <Badge key={index} variant={'outline'} className="text-md md:text-xl">
+                                {user.display_name}
                                 {/* {dayCountMap[user.id] ?? 0}🔥 */}
-                                {peopleOfToday.data.metadataMap[user.id].day_emoji}
-                            </div>
-                            {/* <span className="text-sm text-gray-800">/{today.getFullYear() % 4 === 0 ? 366 : 365}</span> */}
-                        </Badge>
-                    );
-                } else {
-                    return (
-                        <Badge key={index} variant={'outline'} className="text-md md:text-xl">
-                            {user.display_name}
-                            {/* {dayCountMap[user.id] ?? 0}🔥 */}
-                            {/* <span className="text-sm text-gray-300">/{today.getFullYear() % 4 === 0 ? 366 : 365}</span> */}
-                        </Badge>
-                    );
-                }
-            })}
+                                {/* <span className="text-sm text-gray-300">/{today.getFullYear() % 4 === 0 ? 366 : 365}</span> */}
+                            </Badge>
+                        );
+                    }
+                })}
+            </div>
+
+            <div className="flex w-full max-w-[90%] flex-col items-start justify-center gap-2 pt-4 md:items-center">
+                {peopleOfToday.data.userList
+                    .filter((user) => peopleOfToday.data.hasFilledMap[user.id] && peopleOfToday.data.metadataMap[user.id].day_public_note)
+                    .map((user, index) => {
+                        return (
+                            <>
+                                <div key={index} className="flex items-center justify-center px-4 py-1 text-sm md:text-xl">
+                                    <Badge
+                                        variant={'outline'}
+                                        className="mr-2 text-sm md:text-xl"
+                                        style={{ color: peopleOfToday.data.metadataMap[user.id].day_color }}
+                                    >
+                                        {user.display_name}
+                                    </Badge>
+                                    {peopleOfToday.data.metadataMap[user.id].day_public_note}
+                                </div>
+                            </>
+                        );
+                    })}
+            </div>
         </div>
     );
 }
