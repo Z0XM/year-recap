@@ -102,6 +102,7 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
         day_note: '',
         day_person: '',
         day_word: ''
+        // day_photo: ''
     };
 
     const getMetadata = (key: keyof typeof defaultValues) => {
@@ -114,6 +115,7 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
     const [dayRating, setDayRating] = useState(getMetadata('day_score'));
     const [dayEmoji, setDayEmoji] = useState(getMetadata('day_emoji'));
     const [dayColor, setDayColor] = useState(getMetadata('day_color'));
+    // const [dayPhoto, setDayPhoto] = useState(getMetadata('day_photo'));
 
     return (
         <>
@@ -264,7 +266,12 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                             defaultValue={getMetadata('day_note')}
                         />
                     </div>
-
+                    {/* <div className="col-span-8 flex items-center justify-center gap-4">
+                        <Label htmlFor="day_photo" className="w-full">
+                            Photo of the your day
+                        </Label>
+                        <Input name="day_photo" id="day_photo" accept="image/*" type="file" className="cursor-pointer" />
+                    </div> */}
                     <Button type="submit" disabled={hasSubmitted} className="text-md col-span-8 w-full rounded p-2">
                         Submit
                     </Button>
