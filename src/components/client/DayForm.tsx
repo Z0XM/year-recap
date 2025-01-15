@@ -271,7 +271,7 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                             name="day_public_note"
                             placeholder="Write a public note."
                             type="text"
-                            maxLength={64}
+                            maxLength={120}
                             defaultValue={getMetadata('day_public_note')}
                         />
                     </div>
