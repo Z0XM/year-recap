@@ -128,18 +128,16 @@ export default function PeopleOfToday() {
                     .filter((user) => peopleOfToday.data.hasFilledMap[user.id] && peopleOfToday.data.metadataMap[user.id].day_public_note)
                     .map((user, index) => {
                         return (
-                            <>
-                                <div key={index} className="flex items-center justify-center px-4 py-1 text-sm md:text-xl">
-                                    <Badge
-                                        variant={'outline'}
-                                        className="mr-2 text-sm md:text-xl"
-                                        style={{ color: peopleOfToday.data.metadataMap[user.id].day_color }}
-                                    >
-                                        {user.display_name}
-                                    </Badge>
-                                    {peopleOfToday.data.metadataMap[user.id].day_public_note}
-                                </div>
-                            </>
+                            <div key={index} className="flex items-center justify-center px-4 py-1 text-sm md:text-xl">
+                                <Badge
+                                    variant={'outline'}
+                                    className="mr-2 text-sm md:text-xl"
+                                    style={{ color: peopleOfToday.data.metadataMap[user.id].day_color }}
+                                >
+                                    {user.display_name}
+                                </Badge>
+                                {peopleOfToday.data.metadataMap[user.id].day_public_note}
+                            </div>
                         );
                     })}
             </div>
