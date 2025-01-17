@@ -27,7 +27,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <head>
-                <meta name="apple-mobile-web-app-title" content="Smiles" />
+                <meta name="apple-mobile-web-app-title" content="HWYD?" />
             </head>
             <body className={`${font_sour.className}`}>
                 <Toaster />

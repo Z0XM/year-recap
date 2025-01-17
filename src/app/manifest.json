@@ -1,6 +1,6 @@
 {
-  "name": "TheHandMadeSmiles",
-  "short_name": "Smiles",
+  "name": "HowWasYourDay?",
+  "short_name": "HWYD?",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
