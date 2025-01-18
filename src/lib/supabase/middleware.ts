@@ -2,6 +2,10 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
+    if (request.nextUrl.pathname.startsWith('/feedback')) {
+        return NextResponse.next({ request });
+    }
+
     if (process.env.MAINTENANCE_MODE === 'ON') {
         if (!request.nextUrl.pathname.startsWith('/maintenance')) {
             const url = request.nextUrl.clone();
