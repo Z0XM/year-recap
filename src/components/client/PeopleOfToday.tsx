@@ -36,7 +36,13 @@ const fetchPeopleOfToday = async ({ dayInt }: { dayInt: number }) => {
 
     const metadataMap: { [key: string]: any } = {};
 
-    const decryptedMetadata = await SecurityClient.decryptMultipleKeys(hasFilledFormList.data.map((userData) => userData.metadata));
+    const decryptedMetadata = await SecurityClient.decryptMultipleKeys(
+        hasFilledFormList.data.map((userData) => ({
+            day_color: userData.metadata.day_color,
+            day_emoji: userData.metadata.day_emoji,
+            day_public_note: userData.metadata.day_public_note
+        }))
+    );
 
     hasFilledFormList.data.map((userData, index) => {
         metadataMap[userData.user_id] = decryptedMetadata[index];
