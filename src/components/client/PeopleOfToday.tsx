@@ -129,7 +129,7 @@ export default function PeopleOfToday() {
                 })}
             </div>
 
-            <div className="flex w-full max-w-[90%] flex-col items-start justify-center gap-2 pt-4 md:items-center">
+            <div className="mt-4 flex w-full max-w-[90%] flex-col items-start justify-center gap-2 pt-4 md:items-center">
                 {peopleOfToday.data.userList
                     .filter((user) => peopleOfToday.data.hasFilledMap[user.id] && peopleOfToday.data.metadataMap[user.id].day_public_note)
                     .map((user, index) => {
