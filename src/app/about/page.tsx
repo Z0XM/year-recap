@@ -1,5 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Label } from '@/components/ui/label';
+import Link from 'next/link';
 
 /**
  * [Server Rendered Page]
@@ -45,7 +46,10 @@ export default async function AboutPage() {
                     <Accordion className="w-full" type="multiple">
                         <AccordionItem value="1">
                             <AccordionTrigger>What about data privacy ? </AccordionTrigger>
-                            <AccordionContent>All of your submitted data is encrypted on the backend.</AccordionContent>
+                            <AccordionContent>
+                                All of your submitted data is encrypted on the backend. We only store your email for authentication and
+                                sending you reminders.
+                            </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="2">
                             <AccordionTrigger>What if some days or weeks are missed?</AccordionTrigger>
@@ -56,8 +60,11 @@ export default async function AboutPage() {
                             </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="3">
-                            <AccordionTrigger>How can I see my data ?</AccordionTrigger>
-                            <AccordionContent>Currently, you cannot. But it is on our todo list.</AccordionContent>
+                            <AccordionTrigger>How can I see my already submitted data ?</AccordionTrigger>
+                            <AccordionContent>
+                                You cannot on a daily basis. The idea of this app is that you tell us about your day and thats it. You
+                                don&apos;t have to worry about anything else. You will be able to view monthly summaries soon.
+                            </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="4">
                             <AccordionTrigger>Can I see my friends data, like a public record or something ?</AccordionTrigger>
@@ -71,6 +78,12 @@ export default async function AboutPage() {
                             <AccordionContent>
                                 The cycle of this form is shifted by 12 hours, and hence it resets everyday 12PM. So you do not have to rush
                                 overnight if you forget or are busy, take your time, sleep well. Fill it the next day!
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="6">
+                            <AccordionTrigger>Do I have to pay for anything ?</AccordionTrigger>
+                            <AccordionContent>
+                                The basic usage- No! <br /> For year end visualizations- Maybe (I am not sure)!
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
@@ -136,7 +149,20 @@ export default async function AboutPage() {
                     <Accordion className="w-full" type="multiple">
                         <AccordionItem value="1">
                             <AccordionTrigger>An effort By: Z0XM</AccordionTrigger>
-                            {/* <AccordionContent></AccordionContent> */}
+                            <AccordionContent>
+                                This is a passion project by me. Solely Developed by me. Currently being run on free tiers of cloud
+                                services.
+                                <br />
+                                Github{' '}
+                                <Link className="cursor-pointer font-bold" href="https://www.github.com/z0xm">
+                                    z0xm
+                                </Link>
+                                <br />
+                                Instagram{' '}
+                                <Link className="cursor-pointer font-bold" href="https://www.instagram.com/mukul.z">
+                                    mukul.z
+                                </Link>
+                            </AccordionContent>
                         </AccordionItem>
                         <AccordionItem value="2">
                             <AccordionTrigger>Contact</AccordionTrigger>
