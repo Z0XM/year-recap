@@ -66,6 +66,13 @@ export default async function AboutPage() {
                                 effect on personal experiences
                             </AccordionContent>
                         </AccordionItem>
+                        <AccordionItem value="5">
+                            <AccordionTrigger>Can I not fill it after 12 AM ?</AccordionTrigger>
+                            <AccordionContent>
+                                The cycle of this form is shifted by 12 hours, and hence it resets everyday 12PM. So you do not have to rush
+                                overnight if you forget or are busy, take your time, sleep well. Fill it the next day!
+                            </AccordionContent>
+                        </AccordionItem>
                     </Accordion>
                 </div>
             </div>
@@ -89,6 +96,16 @@ export default async function AboutPage() {
                                 we often fail to acknowledge that the people around us could also be going through similar or complex
                                 emotions, bad days, inexpressible feelings and much more. We aim to build a platform where through
                                 visualizations of data people can see, feel and express along with others.
+                            </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="3">
+                            <AccordionTrigger>Why can&apos;t I go back and fill for the days I missed ? </AccordionTrigger>
+                            <AccordionContent>
+                                We do not want this activity to become a daily task or burden for someone. The basic idea of using this app
+                                is to just visit and write about your day. You should not have to worry about missing streaks. Consider it
+                                as talking to a friend daily. In real life, you might not get to talk to them, your day could have been
+                                crazy or sad, but you can&apos;t really go back in time and talk to them about it. Though you can tell them
+                                all about it when you meet them on the weekend or when you connect with them next month.
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
