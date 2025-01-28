@@ -10,7 +10,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '../ui/dropdown-menu';
-import { Fire, Note, SignOut, Stack, UserCircle } from '@phosphor-icons/react';
+import { Fire, Note, PresentationChart, SignOut, Stack, UserCircle } from '@phosphor-icons/react';
 import { useAppInfo } from '@/store/appInfo';
 import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
@@ -65,10 +65,12 @@ export default function UserProfile() {
                             Feedback
                         </DropdownMenuItem>
                     </Link>
-                    {/* <DropdownMenuItem className="text-md cursor-pointer">
-                        <Stack className="text-primary" size={32} />
-                        Backlogs
-                    </DropdownMenuItem> */}
+                    <Link href="/p/dashboard/">
+                        <DropdownMenuItem className="text-md cursor-pointer">
+                            <PresentationChart className="text-primary" size={32} />
+                            Dashboard
+                        </DropdownMenuItem>
+                    </Link>
                     <DropdownMenuItem className="text-md cursor-pointer" onClick={() => supabaseClient.auth.signOut()}>
                         <SignOut className="text-primary" size={32} />
                         Logout

@@ -98,7 +98,7 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
     const defaultValues = {
         day_score: 7,
         day_emoji: '😄',
-        day_color: '#ffffff',
+        day_color: '#a1a1a1',
         day_note: '',
         day_person: '',
         day_word: '',
