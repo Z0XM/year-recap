@@ -182,7 +182,7 @@ export function PublicMonthDashboard() {
                     View Private Dashboard
                 </Link>
             </div>
-            <div className="grid w-[70%] grid-cols-1 items-center justify-center gap-4 p-8 lg:grid-cols-2">
+            <div className="grid w-full grid-cols-1 items-center justify-center gap-4 p-4 lg:w-[70%] lg:grid-cols-2 lg:p-8">
                 {/* <Card className="w-fit">
                     <CardHeader>
                         <CardTitle>Calendar of Colors</CardTitle>
