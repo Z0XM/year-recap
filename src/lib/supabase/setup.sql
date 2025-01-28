@@ -72,3 +72,16 @@ create table
     constraint notification_tokens_pkey primary key (id),
     constraint notification_tokens_token_key unique (token)
   ) tablespace pg_default;
+
+-- create dashboard shares table
+create table
+  public.dashboard_shares (
+    id uuid not null default gen_random_uuid (),
+    created_at timestamp with time zone not null default now(),
+    user_id uuid not null,
+    month bigint null,
+    year bigint not null,
+    access text not null,
+    constraint dashboard_shares_pkey primary key (id),
+    constraint dashboard_shares_user_id_fkey foreign key (user_id) references users (id)
+  ) tablespace pg_default;
