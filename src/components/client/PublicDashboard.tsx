@@ -1,17 +1,14 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { SecurityClient } from '@/lib/encryption';
 import { createClient } from '@/lib/supabase/client';
 import { useAuthStore } from '@/store/auth';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { Area, AreaChart, CartesianGrid, Line, LineChart, XAxis } from 'recharts';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { toast } from 'sonner';
+import { useState } from 'react';
+import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
+
 import Link from 'next/link';
 
 const monthNames = [
@@ -171,8 +168,6 @@ export function PublicMonthDashboard() {
         },
         staleTime: Infinity
     });
-
-    console.log(publicMonthQuery.data);
 
     return (
         <div className="flex flex-col items-center justify-center">
