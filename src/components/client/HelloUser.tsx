@@ -26,7 +26,7 @@ export function HelloUser(props: { today: Date; display_name: string; dayInt: nu
                 {/* <Separator className="w-full" /> */}
                 <CardContent className="px-6 py-4">
                     <div className="text-2xl">
-                        How was your day <span className={`text-3xl font-bold text-primary`}>{display_name}</span> ?
+                        How was your {props.type} <span className={`text-3xl font-bold text-primary`}>{display_name}</span> ?
                     </div>
                     {/* <Link href={'/about'} className='text-lg italic underline'>
 				Know more
