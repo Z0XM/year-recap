@@ -17,7 +17,7 @@ export default function MonthlyFormPage() {
     return (
         <div className="flex w-full items-center justify-center py-6 md:px-10">
             <div className="mx-4 flex flex-col gap-4 md:w-1/2">
-                <HelloUser today={today} display_name={user.display_name} dayInt={dayInt} />
+                <HelloUser today={today} display_name={user.display_name} dayInt={dayInt} type="month" />
                 <MonthForm dayInt={dayInt} userId={user!.id} />
             </div>
         </div>

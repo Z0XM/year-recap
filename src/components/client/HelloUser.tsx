@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Progress } from '../ui/progress';
 
-export function HelloUser(props: { today: Date; display_name: string; dayInt: number }) {
+export function HelloUser(props: { today: Date; display_name: string; dayInt: number; type: 'month' | 'day' }) {
     const { today, display_name, dayInt } = props;
     const noOfDaysInYear = today.getFullYear() % 4 === 0 ? 366 : 365;
     const todayCountOfDay = Math.ceil((today.getTime() - new Date(today.getFullYear(), 0, 1).getTime()) / (1000 * 60 * 60 * 24));
@@ -46,12 +46,22 @@ export function HelloUser(props: { today: Date; display_name: string; dayInt: nu
                 >
                     Public Dashboard
                 </Link>
-                <Link
-                    href="/p/month-end"
-                    className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                >
-                    Month End Form
-                </Link>
+                {props.type === 'day' && (
+                    <Link
+                        href="/p/month-end"
+                        className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                        Month End Form
+                    </Link>
+                )}
+                {props.type === 'month' && (
+                    <Link
+                        href="/p/"
+                        className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                        Daily Form
+                    </Link>
+                )}
             </div>
         </>
     );
