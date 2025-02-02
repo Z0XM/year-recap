@@ -27,26 +27,37 @@ export function Canvas({
                 const canvas = canvasRef.current;
                 const canvasContainer = document.getElementById('canvas-container');
                 if (canvas && canvasContainer) {
+                    const existingImageData = canvas.toDataURL();
+
                     canvas.width = canvasContainer.clientWidth;
                     const heightRatio = 0.6;
                     canvas.height = canvas.width * heightRatio;
-                }
 
-                if (initialDrawing) {
+                    const context = canvas.getContext('2d');
                     const img = new Image();
                     img.onload = () => {
-                        const canvas = canvasRef.current;
-                        const context = canvas?.getContext('2d');
-                        if (context && canvas) {
+                        if (context) {
                             context.drawImage(img, 0, 0);
                         }
                     };
-
-                    img.src = initialDrawing;
+                    img.src = existingImageData;
                 }
             };
             // call resize() once.
             resize();
+
+            if (initialDrawing) {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = canvasRef.current;
+                    const context = canvas?.getContext('2d');
+                    if (context && canvas) {
+                        context.drawImage(img, 0, 0);
+                    }
+                };
+
+                img.src = initialDrawing;
+            }
 
             // attach event listeners.
             window.addEventListener('resize', resize);
