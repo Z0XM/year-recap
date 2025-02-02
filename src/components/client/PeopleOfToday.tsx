@@ -149,18 +149,20 @@ export default function PeopleOfToday() {
                         );
                     })}
             </div>
-            <div className="relative mt-4 flex w-full max-w-[90%] flex-wrap items-center justify-center gap-2 pt-4">
+            <div className="relative flex w-full max-w-[90%] flex-wrap items-center justify-center gap-2">
                 {peopleOfToday.data.userList
                     .filter((user) => peopleOfToday.data.hasFilledMap[user.id] && peopleOfToday.data.metadataMap[user.id].day_drawing)
                     .map((user, index) => {
                         return (
-                            <Image
-                                width={200}
-                                key={index}
-                                height={200 * 0.6}
-                                src={peopleOfToday.data.metadataMap[user.id].day_drawing}
-                                alt=""
-                            />
+                            <div key={index} className="flex max-w-[150px] items-center justify-center sm:max-w-[300px]">
+                                <Image
+                                    width={300}
+                                    height={300 * 0.6}
+                                    // key={index}
+                                    src={peopleOfToday.data.metadataMap[user.id].day_drawing}
+                                    alt=""
+                                />
+                            </div>
                         );
                     })}
             </div>
