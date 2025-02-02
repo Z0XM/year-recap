@@ -16,7 +16,7 @@ export function Canvas({
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const [collapseCanvas, setCollapseCanvas] = useState(true);
+    const [collapseCanvas, setCollapseCanvas] = useState(initialDrawing ? false : true);
 
     useEffect(
         () => {
