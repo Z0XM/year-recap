@@ -90,8 +90,6 @@ export function Canvas() {
                         setIsDrawing(false);
                     }}
                     onTouchStart={(e) => {
-                        e.stopPropagation();
-
                         // know that we are drawing, for future mouse movements.
                         setIsDrawing(true);
                         const context = e.currentTarget.getContext('2d');
@@ -107,8 +105,6 @@ export function Canvas() {
                         }
                     }}
                     onTouchMove={(e) => {
-                        e.stopPropagation();
-
                         // only handle mouse moves when the mouse is already down.
                         if (isDrawing) {
                             const context = e.currentTarget.getContext('2d');
@@ -124,8 +120,6 @@ export function Canvas() {
                         }
                     }}
                     onTouchEnd={(e) => {
-                        e.stopPropagation();
-
                         // end drawing.
                         setIsDrawing(false);
                     }}
