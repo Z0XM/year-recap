@@ -133,7 +133,9 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                     const formData = new FormData(e.target as HTMLFormElement);
                     formData.append('day_emoji', dayEmoji);
                     formData.append('day_color', dayColor);
-                    formData.append('day_drawing', dayDrawingFunction());
+
+                    const currentDayDrawing = dayDrawingFunction();
+                    formData.append('day_drawing', currentDayDrawing ? currentDayDrawing : initialDrawing);
                     addDayData(dayInt, userId, formData).then((error) => {
                         if (error?.message) {
                             setErrorMsg(error.message);
