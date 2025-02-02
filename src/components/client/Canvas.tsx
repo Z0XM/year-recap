@@ -51,7 +51,7 @@ export function Canvas() {
                 style={{
                     display: collapseCanvas ? 'none' : 'block'
                 }}
-                className="relative w-full rounded-lg border-2 border-solid border-white"
+                className="relative w-full rounded-lg ring-2 ring-card"
             >
                 <canvas
                     className="relative"
