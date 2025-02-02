@@ -54,7 +54,7 @@ export function Canvas() {
                 className="relative w-full rounded-lg ring-2 ring-card"
             >
                 <canvas
-                    className="relative"
+                    className="relative touch-none"
                     ref={canvasRef}
                     onMouseDown={(e) => {
                         // know that we are drawing, for future mouse movements.
@@ -67,6 +67,7 @@ export function Canvas() {
                             context.lineCap = 'round';
                             context.lineJoin = 'round';
                             context.strokeStyle = drawColor;
+                            console.log(e.nativeEvent);
                             context.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
                         }
                     }}
@@ -89,6 +90,8 @@ export function Canvas() {
                         setIsDrawing(false);
                     }}
                     onTouchStart={(e) => {
+                        e.stopPropagation();
+
                         // know that we are drawing, for future mouse movements.
                         setIsDrawing(true);
                         const context = e.currentTarget.getContext('2d');
@@ -99,10 +102,13 @@ export function Canvas() {
                             context.lineCap = 'round';
                             context.lineJoin = 'round';
                             context.strokeStyle = drawColor;
-                            context.moveTo(e.nativeEvent.touches[0].clientX, e.nativeEvent.touches[0].clientY);
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            context.moveTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
                         }
                     }}
                     onTouchMove={(e) => {
+                        e.stopPropagation();
+
                         // only handle mouse moves when the mouse is already down.
                         if (isDrawing) {
                             const context = e.currentTarget.getContext('2d');
@@ -111,12 +117,15 @@ export function Canvas() {
                                 context.lineCap = 'round';
                                 context.lineJoin = 'round';
                                 context.strokeStyle = drawColor;
-                                context.lineTo(e.nativeEvent.touches[0].clientX, e.nativeEvent.touches[0].clientY);
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                context.lineTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
                                 context.stroke();
                             }
                         }
                     }}
-                    onTouchEnd={() => {
+                    onTouchEnd={(e) => {
+                        e.stopPropagation();
+
                         // end drawing.
                         setIsDrawing(false);
                     }}
