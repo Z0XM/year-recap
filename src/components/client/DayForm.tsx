@@ -25,6 +25,7 @@ import { listOfEmojis } from '@/lib/emojis';
 import { HexColorPicker } from 'react-colorful';
 import { toast } from 'sonner';
 import { SecurityClient } from '@/lib/encryption';
+import { Canvas } from './Canvas';
 
 function formDataToJSON(formData: FormData) {
     const metadata: { [key: string]: unknown } = {};
@@ -282,6 +283,7 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                         </Label>
                         <Input name="day_photo" id="day_photo" accept="image/*" type="file" className="cursor-pointer" />
                     </div> */}
+                    <Canvas />
                     <Button type="submit" disabled={hasSubmitted} className="text-md col-span-8 w-full rounded p-2">
                         Submit
                     </Button>
