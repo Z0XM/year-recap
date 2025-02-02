@@ -26,6 +26,7 @@ import { HexColorPicker } from 'react-colorful';
 import { toast } from 'sonner';
 import { SecurityClient } from '@/lib/encryption';
 import { Canvas } from './Canvas';
+import { LoadingSpinner } from '../ui/loadingSpinner';
 
 function formDataToJSON(formData: FormData) {
     const metadata: { [key: string]: unknown } = {};
@@ -126,10 +127,10 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
         <>
             {/* <div className="text-sm italic">Note: All fields are optional. You can fill as much as you want.</div> */}
             <form
-                className="w-full"
+                className="relative w-full"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    // setHasSubmitted(true);
+                    setHasSubmitted(true);
                     const formData = new FormData(e.target as HTMLFormElement);
                     formData.append('day_emoji', dayEmoji);
                     formData.append('day_color', dayColor);
@@ -150,6 +151,11 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                     });
                 }}
             >
+                {hasSubmitted && (
+                    <div className="absolute z-[5] flex h-full w-full items-center justify-center rounded-lg bg-[#00000049]">
+                        <LoadingSpinner size={48} />
+                    </div>
+                )}
                 <div className="grid w-full grid-cols-8 flex-col gap-x-4 gap-y-4">
                     <Card className="col-span-6">
                         <CardHeader className="pb-0 pt-6">
