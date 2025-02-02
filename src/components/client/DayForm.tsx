@@ -120,7 +120,7 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
 
     const [initialDrawing, _] = useState(getMetadata('day_drawing'));
 
-    const [dayDrawingFunction, setDayDrawingFunction] = useState<() => string>(() => () => '');
+    const [dayDrawingFunction, setDayDrawingFunction] = useState<() => string>(() => () => initialDrawing);
 
     return (
         <>
