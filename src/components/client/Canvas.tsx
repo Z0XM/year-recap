@@ -1,9 +1,15 @@
 'use client';
 
 import { CaretUpDown, Eraser } from '@phosphor-icons/react';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
-export function Canvas() {
+export function Canvas({
+    setDayDrawingFunction,
+    initialDrawing
+}: {
+    initialDrawing: string;
+    setDayDrawingFunction: Dispatch<SetStateAction<() => string>>;
+}) {
     const [isDrawing, setIsDrawing] = useState(false);
 
     const [drawColor, setDrawColor] = useState('#ffffff');
@@ -14,6 +20,8 @@ export function Canvas() {
 
     useEffect(
         () => {
+            setDayDrawingFunction(() => () => canvasRef.current?.toDataURL() ?? '');
+
             // define the resize function, which uses the re
             const resize = () => {
                 const canvas = canvasRef.current;
@@ -26,6 +34,19 @@ export function Canvas() {
             };
             // call resize() once.
             resize();
+
+            if (initialDrawing) {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = canvasRef.current;
+                    const context = canvas?.getContext('2d');
+                    if (context && canvas) {
+                        context.drawImage(img, 0, 0);
+                    }
+                };
+
+                img.src = initialDrawing;
+            }
             // attach event listeners.
             window.addEventListener('resize', resize);
             // remove listeners on unmount.
@@ -35,6 +56,36 @@ export function Canvas() {
         },
         [] // no dependencies means that it will be called once on mount.
     );
+
+    const onDown = (context: any, offsetX: number, offsetY: number) => {
+        if (context) {
+            setIsDrawing(true);
+
+            context.beginPath();
+            context.lineWidth = 3;
+            context.lineCap = 'round';
+            context.lineJoin = 'round';
+            context.strokeStyle = drawColor;
+            context.moveTo(offsetX, offsetY);
+        }
+    };
+
+    const onUp = () => {
+        setIsDrawing(false);
+    };
+
+    const onMove = (context: any, offsetX: number, offsetY: number) => {
+        if (isDrawing && context) {
+            context.lineWidth = 3;
+            context.lineCap = 'round';
+            context.lineJoin = 'round';
+            context.strokeStyle = drawColor;
+            context.lineTo(offsetX, offsetY);
+            context.stroke();
+            context.beginPath();
+            context.moveTo(offsetX, offsetY);
+        }
+    };
 
     return (
         <div id="canvas-container" className="relative col-span-8 flex w-full flex-col justify-center gap-2">
@@ -57,75 +108,25 @@ export function Canvas() {
                     className="relative touch-none"
                     ref={canvasRef}
                     onMouseDown={(e) => {
-                        // know that we are drawing, for future mouse movements.
-                        setIsDrawing(true);
-                        const context = e.currentTarget.getContext('2d');
-                        // begin path.
-                        if (context) {
-                            context.beginPath();
-                            context.lineWidth = 3;
-                            context.lineCap = 'round';
-                            context.lineJoin = 'round';
-                            context.strokeStyle = drawColor;
-                            context.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-                        }
+                        onDown(e.currentTarget.getContext('2d'), e.nativeEvent.offsetX, e.nativeEvent.offsetY);
                     }}
                     onMouseMove={(e) => {
-                        // only handle mouse moves when the mouse is already down.
-                        if (isDrawing) {
-                            const context = e.currentTarget.getContext('2d');
-                            if (context) {
-                                context.lineWidth = 3;
-                                context.lineCap = 'round';
-                                context.lineJoin = 'round';
-                                context.strokeStyle = drawColor;
-                                context.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-                                context.stroke();
-                                context.beginPath();
-                                context.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-                            }
-                        }
+                        onMove(e.currentTarget.getContext('2d'), e.nativeEvent.offsetX, e.nativeEvent.offsetY);
                     }}
-                    onMouseUp={() => {
-                        // end drawing.
-                        setIsDrawing(false);
-                    }}
+                    onMouseUp={() => onUp()}
                     onTouchStart={(e) => {
-                        // know that we are drawing, for future mouse movements.
-                        setIsDrawing(true);
-                        const context = e.currentTarget.getContext('2d');
-                        // begin path.
-                        if (context) {
-                            context.beginPath();
-                            context.lineWidth = 3;
-                            context.lineCap = 'round';
-                            context.lineJoin = 'round';
-                            context.strokeStyle = drawColor;
-                            const rect = e.currentTarget.getBoundingClientRect();
-                            context.moveTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
-                        }
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const offsetX = e.touches[0].clientX - rect.left;
+                        const offsetY = e.touches[0].clientY - rect.top;
+                        onDown(e.currentTarget.getContext('2d'), offsetX, offsetY);
                     }}
                     onTouchMove={(e) => {
-                        // only handle mouse moves when the mouse is already down.
-                        if (isDrawing) {
-                            const context = e.currentTarget.getContext('2d');
-                            if (context) {
-                                context.lineWidth = 3;
-                                context.lineCap = 'round';
-                                context.lineJoin = 'round';
-                                context.strokeStyle = drawColor;
-                                const rect = e.currentTarget.getBoundingClientRect();
-                                context.lineTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
-                                context.stroke();
-                                context.beginPath();
-                                context.moveTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
-                            }
-                        }
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const offsetX = e.touches[0].clientX - rect.left;
+                        const offsetY = e.touches[0].clientY - rect.top;
+                        onMove(e.currentTarget.getContext('2d'), offsetX, offsetY);
                     }}
-                    onTouchEnd={() => {
-                        // end drawing.
-                        setIsDrawing(false);
-                    }}
+                    onTouchEnd={() => onUp()}
                 ></canvas>
                 <div className="absolute right-0 top-0 z-[1] flex h-full items-center justify-center pr-2">
                     <div className="grid h-fit grid-cols-2 gap-2 xl:grid-cols-1">

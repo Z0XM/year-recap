@@ -103,7 +103,8 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
         day_note: '',
         day_person: '',
         day_word: '',
-        day_public_note: ''
+        day_public_note: '',
+        day_drawing: ''
     };
 
     const getMetadata = (key: keyof typeof defaultValues) => {
@@ -116,7 +117,10 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
     const [dayRating, setDayRating] = useState(getMetadata('day_score'));
     const [dayEmoji, setDayEmoji] = useState(getMetadata('day_emoji'));
     const [dayColor, setDayColor] = useState(getMetadata('day_color'));
-    // const [dayPhoto, setDayPhoto] = useState(getMetadata('day_photo'));
+
+    const [initialDrawing, _] = useState(getMetadata('day_drawing'));
+
+    const [dayDrawingFunction, setDayDrawingFunction] = useState<() => string>(() => () => '');
 
     return (
         <>
@@ -125,10 +129,11 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                 className="my-4 w-full"
                 onSubmit={(e) => {
                     e.preventDefault();
-                    setHasSubmitted(true);
+                    // setHasSubmitted(true);
                     const formData = new FormData(e.target as HTMLFormElement);
                     formData.append('day_emoji', dayEmoji);
                     formData.append('day_color', dayColor);
+                    formData.append('day_drawing', dayDrawingFunction());
                     addDayData(dayInt, userId, formData).then((error) => {
                         if (error?.message) {
                             setErrorMsg(error.message);
@@ -144,7 +149,6 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                 }}
             >
                 <div className="grid w-full grid-cols-8 flex-col gap-x-4 gap-y-4">
-                    {/* <div className='w-full flex gap-4'> */}
                     <Card className="col-span-6">
                         <CardHeader className="pb-0 pt-6">
                             <CardTitle>
@@ -276,14 +280,7 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                             defaultValue={getMetadata('day_public_note')}
                         />
                     </div>
-
-                    {/* <div className="col-span-8 flex items-center justify-center gap-4">
-                        <Label htmlFor="day_photo" className="w-full">
-                            Photo of the your day
-                        </Label>
-                        <Input name="day_photo" id="day_photo" accept="image/*" type="file" className="cursor-pointer" />
-                    </div> */}
-                    <Canvas />
+                    <Canvas setDayDrawingFunction={setDayDrawingFunction} initialDrawing={initialDrawing} />
                     <Button type="submit" disabled={hasSubmitted} className="text-md col-span-8 w-full rounded p-2">
                         Submit
                     </Button>
