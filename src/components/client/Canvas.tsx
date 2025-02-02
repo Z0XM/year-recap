@@ -67,7 +67,6 @@ export function Canvas() {
                             context.lineCap = 'round';
                             context.lineJoin = 'round';
                             context.strokeStyle = drawColor;
-                            console.log(e.nativeEvent);
                             context.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
                         }
                     }}
@@ -82,6 +81,8 @@ export function Canvas() {
                                 context.strokeStyle = drawColor;
                                 context.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
                                 context.stroke();
+                                context.beginPath();
+                                context.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
                             }
                         }
                     }}
@@ -116,10 +117,12 @@ export function Canvas() {
                                 const rect = e.currentTarget.getBoundingClientRect();
                                 context.lineTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
                                 context.stroke();
+                                context.beginPath();
+                                context.moveTo(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top);
                             }
                         }
                     }}
-                    onTouchEnd={(e) => {
+                    onTouchEnd={() => {
                         // end drawing.
                         setIsDrawing(false);
                     }}
