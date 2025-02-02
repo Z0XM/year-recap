@@ -104,32 +104,6 @@ const fetchDrawingsOfToday = async ({ dayInt }: { dayInt: number }) => {
 export default function PeopleOfToday() {
     const { dayInt } = useAppInfo();
 
-    // const [peopleOfToday, setPeopleOfToday] = useState<
-    //     | { hasLoaded: false }
-    //     | { hasLoaded: true; isError: true; errorMessage: string }
-    //     | {
-    //           hasLoaded: true;
-    //           isError: false;
-    //           data: {
-    //               userList: {
-    //                   id: string;
-    //                   display_name: string;
-    //                   accent_color: string;
-    //               }[];
-    //               hasFilledMap: { [key: string]: boolean };
-    //               metadataMap: { [key: string]: any };
-    //           };
-    //       }
-    // >({
-    //     hasLoaded: false
-    // });
-
-    // useEffect(() => {
-    //     fetchPeopleOfToday({ dayInt }).then((res) => {
-    //         setPeopleOfToday({ hasLoaded: true, ...res });
-    //     });
-    // }, [dayInt]);
-
     const peopleMetadataQuery = useQuery({
         queryKey: ['people-day-metadata', dayInt],
         queryFn: () => fetchPeopleOfToday({ dayInt }),
@@ -141,14 +115,6 @@ export default function PeopleOfToday() {
         queryFn: () => fetchDrawingsOfToday({ dayInt }),
         staleTime: 1000 * 60 * 5
     });
-
-    // if (!peopleOfToday.hasLoaded) {
-    //     return <LoadingSpinner />;
-    // }
-
-    // if (peopleOfToday.isError) {
-    //     return <div>Something Went Wrong!</div>;
-    // }
 
     return (
         <div className="flex flex-col items-center">
@@ -215,19 +181,21 @@ export default function PeopleOfToday() {
             {!peopleDrawingQuery.data && <LoadingSpinner />}
             {peopleDrawingQuery.data?.data && (
                 <div className="relative flex w-full max-w-[90%] flex-wrap items-center justify-center gap-2">
-                    {Object.keys(peopleDrawingQuery.data.data.drawingMap).map((userId, index) => {
-                        return (
-                            <div key={index} className="flex max-w-[150px] items-center justify-center sm:max-w-[300px]">
-                                <Image
-                                    width={300}
-                                    height={300 * 0.6}
-                                    // key={index}
-                                    src={peopleDrawingQuery.data.data!.drawingMap[userId].day_drawing}
-                                    alt=""
-                                />
-                            </div>
-                        );
-                    })}
+                    {Object.keys(peopleDrawingQuery.data.data.drawingMap)
+                        .filter((x) => peopleDrawingQuery.data.data!.drawingMap[x].day_drawing)
+                        .map((userId, index) => {
+                            return (
+                                <div key={index} className="flex max-w-[150px] items-center justify-center sm:max-w-[300px]">
+                                    <Image
+                                        width={300}
+                                        height={300 * 0.6}
+                                        // key={index}
+                                        src={peopleDrawingQuery.data.data!.drawingMap[userId].day_drawing}
+                                        alt=""
+                                    />
+                                </div>
+                            );
+                        })}
                 </div>
             )}
         </div>

@@ -123,7 +123,7 @@ export default function MonthForm(props: { dayInt: number; userId: string }) {
                             setErrorMsg(error.message);
                             setHasSubmitted(false);
                         } else {
-                            console.log('Day data added successfully');
+                            // console.log('Day data added successfully');
                             toast.success('Submitted successfully');
                             router.push('/p');
                         }

@@ -18,10 +18,10 @@ export function Canvas({
 
     const [collapseCanvas, setCollapseCanvas] = useState(initialDrawing ? false : true);
 
+    const [hasDrawn, setHasDrawn] = useState(initialDrawing ? true : false);
+
     useEffect(
         () => {
-            setDayDrawingFunction(() => () => canvasRef.current?.toDataURL() ?? '');
-
             // define the resize function, which uses the re
             const resize = () => {
                 const canvas = canvasRef.current;
@@ -68,6 +68,10 @@ export function Canvas({
         },
         [] // no dependencies means that it will be called once on mount.
     );
+
+    useEffect(() => {
+        setDayDrawingFunction(() => () => (hasDrawn ? (canvasRef.current?.toDataURL() ?? '') : ''));
+    }, [hasDrawn]);
 
     const onDown = (context: any, offsetX: number, offsetY: number) => {
         if (context) {
@@ -120,6 +124,7 @@ export function Canvas({
                     className="relative touch-none"
                     ref={canvasRef}
                     onMouseDown={(e) => {
+                        setHasDrawn(true);
                         onDown(e.currentTarget.getContext('2d'), e.nativeEvent.offsetX, e.nativeEvent.offsetY);
                     }}
                     onMouseMove={(e) => {
@@ -127,6 +132,7 @@ export function Canvas({
                     }}
                     onMouseUp={() => onUp()}
                     onTouchStart={(e) => {
+                        setHasDrawn(true);
                         const rect = e.currentTarget.getBoundingClientRect();
                         const offsetX = e.touches[0].clientX - rect.left;
                         const offsetY = e.touches[0].clientY - rect.top;
@@ -195,6 +201,7 @@ export function Canvas({
                                     weight="fill"
                                     size={32}
                                     onClick={() => {
+                                        setHasDrawn(false);
                                         const canvas = canvasRef.current;
                                         const context = canvas?.getContext('2d');
                                         if (context && canvas) {

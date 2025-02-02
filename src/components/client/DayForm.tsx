@@ -136,13 +136,13 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
                     formData.append('day_color', dayColor);
 
                     const currentDayDrawing = dayDrawingFunction();
-                    formData.append('day_drawing', currentDayDrawing ? currentDayDrawing : initialDrawing);
+                    formData.append('day_drawing', currentDayDrawing);
                     addDayData(dayInt, userId, formData).then((error) => {
                         if (error?.message) {
                             setErrorMsg(error.message);
                             setHasSubmitted(false);
                         } else {
-                            console.log('Day data added successfully');
+                            // console.log('Day data added successfully');
                             toast.success('Submitted successfully');
                             setHasFilledDayForm(true);
                             setDayMetadata(formDataToJSON(formData));
