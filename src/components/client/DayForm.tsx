@@ -126,7 +126,7 @@ export default function DayForm(props: { dayInt: number; userId: string; initial
         <>
             {/* <div className="text-sm italic">Note: All fields are optional. You can fill as much as you want.</div> */}
             <form
-                className="my-4 w-full"
+                className="w-full"
                 onSubmit={(e) => {
                     e.preventDefault();
                     // setHasSubmitted(true);
