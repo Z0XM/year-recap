@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { LoadingSpinner } from '../ui/loadingSpinner';
 import { SecurityClient } from '@/lib/encryption';
 import { useAppInfo } from '@/store/appInfo';
+import Image from 'next/image';
 
 const fetchPeopleOfToday = async ({ dayInt }: { dayInt: number }) => {
     const supabase = createClient();
@@ -40,7 +41,8 @@ const fetchPeopleOfToday = async ({ dayInt }: { dayInt: number }) => {
         hasFilledFormList.data.map((userData) => ({
             day_color: userData.metadata.day_color,
             day_emoji: userData.metadata.day_emoji,
-            day_public_note: userData.metadata.day_public_note
+            day_public_note: userData.metadata.day_public_note,
+            day_drawing: userData.metadata.day_drawing
         }))
     );
 
@@ -105,7 +107,7 @@ export default function PeopleOfToday() {
                                 key={index}
                                 // style={{ borderColor: user.accent_color }}
                                 variant={'outline'}
-                                className="text-md border-green-500 px-4 py-1 md:text-xl"
+                                className="border-green-500 px-4 py-1 text-sm md:text-xl"
                             >
                                 <div className="flex">
                                     <span className="mr-2" style={{ color: peopleOfToday.data.metadataMap[user.id].day_color }}>
@@ -119,7 +121,7 @@ export default function PeopleOfToday() {
                         );
                     } else {
                         return (
-                            <Badge key={index} variant={'outline'} className="text-md md:text-xl">
+                            <Badge key={index} variant={'outline'} className="text-sm md:text-xl">
                                 {user.display_name}
                                 {/* {dayCountMap[user.id] ?? 0}🔥 */}
                                 {/* <span className="text-sm text-gray-300">/{today.getFullYear() % 4 === 0 ? 366 : 365}</span> */}
@@ -144,6 +146,21 @@ export default function PeopleOfToday() {
                                 </Badge>
                                 {peopleOfToday.data.metadataMap[user.id].day_public_note}
                             </div>
+                        );
+                    })}
+            </div>
+            <div className="relative mt-4 flex w-full max-w-[90%] flex-wrap items-center justify-center gap-2 pt-4">
+                {peopleOfToday.data.userList
+                    .filter((user) => peopleOfToday.data.hasFilledMap[user.id] && peopleOfToday.data.metadataMap[user.id].day_drawing)
+                    .map((user, index) => {
+                        return (
+                            <Image
+                                width={200}
+                                key={index}
+                                height={200 * 0.6}
+                                src={peopleOfToday.data.metadataMap[user.id].day_drawing}
+                                alt=""
+                            />
                         );
                     })}
             </div>
