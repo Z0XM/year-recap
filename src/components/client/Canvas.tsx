@@ -31,22 +31,23 @@ export function Canvas({
                     const heightRatio = 0.6;
                     canvas.height = canvas.width * heightRatio;
                 }
+
+                if (initialDrawing) {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = canvasRef.current;
+                        const context = canvas?.getContext('2d');
+                        if (context && canvas) {
+                            context.drawImage(img, 0, 0);
+                        }
+                    };
+
+                    img.src = initialDrawing;
+                }
             };
             // call resize() once.
             resize();
 
-            if (initialDrawing) {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = canvasRef.current;
-                    const context = canvas?.getContext('2d');
-                    if (context && canvas) {
-                        context.drawImage(img, 0, 0);
-                    }
-                };
-
-                img.src = initialDrawing;
-            }
             // attach event listeners.
             window.addEventListener('resize', resize);
             // remove listeners on unmount.
