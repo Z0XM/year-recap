@@ -34,7 +34,7 @@ export function HelloUser(props: { today: Date; display_name: string; dayInt: nu
                 </CardContent>
             </Card>
             <div className="flex w-full flex-wrap items-center justify-between gap-2">
-                <Link
+                {/* <Link
                     href="/p/dashboard/"
                     className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
@@ -45,7 +45,7 @@ export function HelloUser(props: { today: Date; display_name: string; dayInt: nu
                     className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                     Public Dashboard
-                </Link>
+                </Link> */}
                 {/* {props.type === 'day' && (
                     <Link
                         href="/p/month-end"
