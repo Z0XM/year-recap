@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 
 import Link from 'next/link';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 const monthNames = [
     'January',
@@ -171,7 +172,16 @@ export function PublicMonthDashboard() {
 
     return (
         <div className="flex flex-col items-center justify-center">
-            <div className="pt-6 text-3xl">{monthNames[selectedMonth - 1]}</div>
+            <Select onValueChange={(v) => setSelectedMonth(parseInt(v))} defaultValue={monthNames[selectedMonth - 1]}>
+                <SelectTrigger className="my-4 w-[180px]">
+                    <SelectValue className="pt-6 text-3xl" placeholder="Select a Month" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="1">January</SelectItem>
+                    <SelectItem value="2">February</SelectItem>
+                    <SelectItem value="3">March</SelectItem>
+                </SelectContent>
+            </Select>
             <div>
                 <Link href={'/p/dashboard/'} className="underline hover:text-primary">
                     View Private Dashboard

@@ -13,6 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select';
 
 const monthNames = [
     'January',
@@ -129,7 +130,16 @@ export function PrivateMonthDashboard() {
 
     return (
         <div className="flex flex-col items-center justify-center">
-            <div className="pt-6 text-3xl">{monthNames[selectedMonth - 1]}</div>
+            <Select onValueChange={(v) => setSelectedMonth(parseInt(v))} defaultValue={monthNames[selectedMonth - 1]}>
+                <SelectTrigger className="my-4 w-[180px]">
+                    <SelectValue className="pt-6 text-3xl" placeholder="Select a Month" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="1">January</SelectItem>
+                    <SelectItem value="2">February</SelectItem>
+                    <SelectItem value="3">March</SelectItem>
+                </SelectContent>
+            </Select>
             <div>
                 <Link href={'/p/dashboard/public'} className="underline hover:text-primary">
                     View Public Dashboard
