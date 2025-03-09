@@ -63,7 +63,6 @@ export const listOfEmojis = [
     '🙁',
     '😮',
     '😯',
-    '😲',
     '😳',
     '🥺',
     '😦',
@@ -87,6 +86,7 @@ export const listOfEmojis = [
     '✨',
     '🌟',
     '♾️',
+    '🔥',
 
     // Angry faces
     '😡',
