@@ -63,7 +63,15 @@ export function PrivateMonthDashboard() {
             const selectedRange = [selectedMonthInt, selectedMonthInt + 99];
             const dayDataArray = await supabase
                 .from('day_data')
-                .select('metadata, day_int')
+                .select(
+                    `
+                    metadata->day_color, 
+                    metadata->day_emoji,
+                    metadata->day_score, 
+                    day_int, 
+                    user_id
+                `
+                )
                 .eq('user_id', user!.id)
                 .lte('day_int', selectedRange[1])
                 .gte('day_int', selectedRange[0])
@@ -73,10 +81,18 @@ export function PrivateMonthDashboard() {
                 throw dayDataArray.error;
             }
 
-            const decryptedMetadataArray = await SecurityClient.decryptMultipleKeys(dayDataArray.data.map((userData) => userData.metadata));
+            const decryptedMetadataArray = await SecurityClient.decryptMultipleKeys(
+                dayDataArray.data.map((userData) => ({
+                    day_color: userData.day_color as string,
+                    day_score: userData.day_score as string,
+                    day_emoji: userData.day_emoji as string
+                }))
+            );
 
             dayDataArray.data.forEach((userData, index) => {
-                userData.metadata = decryptedMetadataArray[index];
+                userData.day_color = decryptedMetadataArray[index].day_color;
+                userData.day_score = decryptedMetadataArray[index].day_score;
+                userData.day_emoji = decryptedMetadataArray[index].day_emoji;
             });
             return dayDataArray.data;
         },
@@ -187,8 +203,8 @@ export function PrivateMonthDashboard() {
                                                 <div
                                                     style={{
                                                         backgroundColor:
-                                                            dayIntDataMap[selectedYear * 10000 + selectedMonth * 100 + dayNumber]?.metadata
-                                                                .day_color ?? 'a1a1a1',
+                                                            dayIntDataMap[selectedYear * 10000 + selectedMonth * 100 + dayNumber]
+                                                                ?.day_color ?? 'a1a1a1',
                                                         border: dayIntDataMap[selectedYear * 10000 + selectedMonth * 100 + dayNumber]
                                                             ? 'none'
                                                             : '1px dashed black'
@@ -245,14 +261,13 @@ export function PrivateMonthDashboard() {
                                                 <div
                                                     style={{
                                                         border: dayIntDataMap[selectedYear * 10000 + selectedMonth * 100 + dayNumber]
-                                                            ?.metadata.day_emoji
+                                                            ?.day_emoji
                                                             ? 'none'
                                                             : '1px dashed black'
                                                     }}
                                                     className="h-8 w-8 rounded-sm text-2xl duration-300"
                                                 >
-                                                    {dayIntDataMap[selectedYear * 10000 + selectedMonth * 100 + dayNumber]?.metadata
-                                                        .day_emoji ?? ''}
+                                                    {dayIntDataMap[selectedYear * 10000 + selectedMonth * 100 + dayNumber]?.day_emoji ?? ''}
                                                 </div>
                                             </TooltipTrigger>
                                             <TooltipContent className="bg-white">{dayNumber}</TooltipContent>
@@ -291,7 +306,7 @@ export function PrivateMonthDashboard() {
                                 accessibilityLayer
                                 data={
                                     userMonthQuery.data
-                                        ? userMonthQuery.data.map((x) => ({ day: x.day_int % 100, score: x.metadata.day_score }))
+                                        ? userMonthQuery.data.map((x) => ({ day: x.day_int % 100, score: x.day_score }))
                                         : []
                                 }
                                 margin={{
@@ -308,6 +323,7 @@ export function PrivateMonthDashboard() {
                                     fill="var(--color-desktop)"
                                     fillOpacity={0.4}
                                     stroke="var(--color-desktop)"
+                                    dot={{ fill: 'var(--color-desktop)', r: 2 }}
                                 />
                             </AreaChart>
                         </ChartContainer>

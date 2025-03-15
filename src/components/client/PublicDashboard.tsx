@@ -103,7 +103,15 @@ export function PublicMonthDashboard() {
 
             const dayDataArray = await supabase
                 .from('day_data')
-                .select('metadata, day_int, user_id')
+                .select(
+                    `
+                    metadata->day_color, 
+                    metadata->day_emoji,
+                    metadata->day_score, 
+                    day_int, 
+                    user_id
+                `
+                )
                 .in('user_id', publicUserIds)
                 .lte('day_int', selectedRange[1])
                 .gte('day_int', selectedRange[0])
@@ -120,13 +128,13 @@ export function PublicMonthDashboard() {
                         return sharedObject;
                     }
                     if (accessMap[userData.user_id].shareColors) {
-                        sharedObject.day_color = userData.metadata.day_color;
+                        sharedObject.day_color = userData.day_color as string;
                     }
                     if (accessMap[userData.user_id].shareScores) {
-                        sharedObject.day_score = userData.metadata.day_score;
+                        sharedObject.day_score = userData.day_score as string;
                     }
                     if (accessMap[userData.user_id].shareEmojis) {
-                        sharedObject.day_emoji = userData.metadata.day_emoji;
+                        sharedObject.day_emoji = userData.day_emoji as string;
                     }
 
                     return sharedObject;
@@ -134,7 +142,9 @@ export function PublicMonthDashboard() {
             );
 
             dayDataArray.data.forEach((userData, index) => {
-                userData.metadata = decryptedMetadataArray[index];
+                userData.day_color = decryptedMetadataArray[index].day_color;
+                userData.day_score = decryptedMetadataArray[index].day_score;
+                userData.day_emoji = decryptedMetadataArray[index].day_emoji;
             });
 
             const dayWiseCombined: {
@@ -147,7 +157,11 @@ export function PublicMonthDashboard() {
                 if (!dayWiseCombined[userData.day_int]) {
                     dayWiseCombined[userData.day_int] = {};
                 }
-                dayWiseCombined[userData.day_int][userData.user_id] = userData.metadata;
+                dayWiseCombined[userData.day_int][userData.user_id] = {
+                    day_color: userData.day_color,
+                    day_score: userData.day_score,
+                    day_emoji: userData.day_emoji
+                };
             });
 
             // const chart = dayDataArray.data.map((x) => ({ day: x.day_int % 100, [x.user_id + '_score']: x.metadata.day_score, [x.user_id + '_emoji']: x.metadata.day_emoji }));
@@ -294,7 +308,7 @@ export function PublicMonthDashboard() {
                                         type="monotone"
                                         stroke={publicMonthQuery.data!.userMap[userId].accent_color}
                                         strokeWidth={2}
-                                        dot={false}
+                                        dot={{ r: 2, fill: publicMonthQuery.data!.userMap[userId].accent_color }}
                                     />
                                 ))}
                             </LineChart>
