@@ -130,7 +130,7 @@ export function PrivateMonthDashboard() {
 
     return (
         <div className="flex flex-col items-center justify-center">
-            <Select onValueChange={(v) => setSelectedMonth(parseInt(v))} defaultValue={monthNames[selectedMonth - 1]}>
+            <Select onValueChange={(v) => setSelectedMonth(parseInt(v))} defaultValue={selectedMonth.toString()}>
                 <SelectTrigger className="my-4 w-[180px]">
                     <SelectValue className="pt-6 text-3xl" placeholder="Select a Month" />
                 </SelectTrigger>
