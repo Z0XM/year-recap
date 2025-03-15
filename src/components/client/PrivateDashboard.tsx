@@ -14,6 +14,8 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select';
+import Image from 'next/image';
+import { LoadingSpinner } from '../ui/loadingSpinner';
 
 const monthNames = [
     'January',
@@ -48,6 +50,7 @@ export function PrivateMonthDashboard() {
     const [shareColor, setShareColor] = useState(false);
     const [shareEmotions, setShareEmotions] = useState(false);
     const [shareScores, setShareScores] = useState(false);
+    const [shareDrawings, setShareDrawings] = useState(false);
 
     const getDaysInMonth = (month: number, year: number) => {
         return new Date(year, month, 0).getDate();
@@ -99,6 +102,43 @@ export function PrivateMonthDashboard() {
         staleTime: Infinity
     });
 
+    const userMonthDrawingQuery = useQuery({
+        queryKey: ['user-month-drawing', selectedMonth, selectedYear],
+        queryFn: async () => {
+            const selectedMonthInt = selectedYear * 10000 + selectedMonth * 100;
+            const selectedRange = [selectedMonthInt, selectedMonthInt + 99];
+            const dayDataArray = await supabase
+                .from('day_data')
+                .select(
+                    `
+                    metadata->day_drawing, 
+                    day_int, 
+                    user_id
+                `
+                )
+                .eq('user_id', user!.id)
+                .lte('day_int', selectedRange[1])
+                .gte('day_int', selectedRange[0])
+                .order('day_int', { ascending: true });
+
+            if (dayDataArray.error || !dayDataArray.data) {
+                throw dayDataArray.error;
+            }
+
+            const decryptedMetadataArray = await SecurityClient.decryptMultipleKeys(
+                dayDataArray.data.map((userData) => ({
+                    day_drawing: userData.day_drawing as string
+                }))
+            );
+
+            dayDataArray.data.forEach((userData, index) => {
+                userData.day_drawing = decryptedMetadataArray[index].day_drawing;
+            });
+            return dayDataArray.data;
+        },
+        staleTime: Infinity
+    });
+
     useEffect(() => {
         const fetchAccess = async () => {
             const dashboardShares = await supabase
@@ -116,6 +156,7 @@ export function PrivateMonthDashboard() {
                 setShareColor(false);
                 setShareEmotions(false);
                 setShareScores(false);
+                setShareDrawings(false);
                 return;
             }
             const allAccessString = dashboardShares.data.map((x) => x.access).join(':');
@@ -123,6 +164,7 @@ export function PrivateMonthDashboard() {
             setShareColor(allAccessString.includes('--color--'));
             setShareEmotions(allAccessString.includes('--emoji--'));
             setShareScores(allAccessString.includes('--score--'));
+            setShareDrawings(allAccessString.includes('--drawing--'));
         };
         fetchAccess().then().catch(console.error);
     }, []);
@@ -330,6 +372,31 @@ export function PrivateMonthDashboard() {
                     </CardContent>
                 </Card>
             </div>
+            {userMonthDrawingQuery.isLoading && (
+                <div className="p-4">
+                    <LoadingSpinner />
+                </div>
+            )}
+            {userMonthDrawingQuery.data?.length && (
+                <div className="relative flex w-full max-w-[90%] flex-wrap items-center justify-center gap-2">
+                    {userMonthDrawingQuery.data
+                        .filter((x) => x.day_drawing)
+                        .sort((a, b) => a.day_int - b.day_int)
+                        .map((data, index) => {
+                            return (
+                                <div key={index} className="flex max-w-[150px] items-center justify-center sm:max-w-[300px]">
+                                    <Image
+                                        width={300}
+                                        height={300 * 0.6}
+                                        // key={index}
+                                        src={data.day_drawing as string}
+                                        alt=""
+                                    />
+                                </div>
+                            );
+                        })}
+                </div>
+            )}
         </div>
     );
 }

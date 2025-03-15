@@ -11,6 +11,7 @@ export class SecurityServer {
     }
 
     static decrypt(encrypted_value: string) {
+        if (!encrypted_value) return '';
         const bytes = CryptoJS.AES.decrypt(encrypted_value, secretKey());
         return bytes.toString(CryptoJS.enc.Utf8);
     }

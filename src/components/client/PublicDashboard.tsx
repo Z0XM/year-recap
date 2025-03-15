@@ -5,12 +5,14 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '
 import { SecurityClient } from '@/lib/encryption';
 import { createClient } from '@/lib/supabase/client';
 import { useAuthStore } from '@/store/auth';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 
 import Link from 'next/link';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { LoadingSpinner } from '../ui/loadingSpinner';
+import Image from 'next/image';
 
 const monthNames = [
     'January',
@@ -184,6 +186,63 @@ export function PublicMonthDashboard() {
         staleTime: Infinity
     });
 
+    const PAGE_SIZE = 10;
+    const queryClient = useQueryClient();
+    const publicMonthDrawingQuery = useQuery({
+        queryKey: ['public-month-drawing', selectedMonth, selectedYear],
+        queryFn: async () => {
+            const selectedMonthInt = selectedYear * 10000 + selectedMonth * 100;
+            const selectedRange = [selectedMonthInt, selectedMonthInt + 99];
+
+            // First get total count
+            const countResult = await supabase
+                .from('day_data')
+                .select('id', { count: 'exact' })
+                .lte('day_int', selectedRange[1])
+                .gte('day_int', selectedRange[0]);
+
+            const totalCount = countResult.count || 0;
+            const pages = Math.ceil(totalCount / PAGE_SIZE);
+            const allDrawings = [];
+
+            // Fetch data page by page
+            for (let page = 0; page < pages; page++) {
+                const dayDataArray = await supabase
+                    .from('day_data')
+                    .select(`metadata->day_drawing`)
+                    .lte('day_int', selectedRange[1])
+                    .gte('day_int', selectedRange[0])
+                    .order('day_int', { ascending: true })
+                    .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
+
+                if (dayDataArray.error || !dayDataArray.data) {
+                    throw dayDataArray.error;
+                }
+
+                const decryptedMetadataArray = await SecurityClient.decryptMultipleKeys(
+                    dayDataArray.data.map((userData) => ({
+                        day_drawing: userData.day_drawing as string
+                    }))
+                );
+
+                dayDataArray.data.forEach((userData, index) => {
+                    userData.day_drawing = decryptedMetadataArray[index].day_drawing;
+                });
+
+                allDrawings.push(...dayDataArray.data);
+
+                // Notify about progress
+                queryClient.setQueryData(['public-month-drawing', selectedMonth, selectedYear], {
+                    drawingData: [...allDrawings],
+                    isPartial: page < pages - 1
+                });
+            }
+
+            return { drawingData: allDrawings, isPartial: false };
+        },
+        staleTime: Infinity
+    });
+
     return (
         <div className="flex flex-col items-center justify-center">
             <Select onValueChange={(v) => setSelectedMonth(parseInt(v))} defaultValue={selectedMonth.toString()}>
@@ -316,6 +375,30 @@ export function PublicMonthDashboard() {
                     </CardContent>
                 </Card>
             </div>
+            {!publicMonthDrawingQuery.data && (
+                <div className="p-4">
+                    <LoadingSpinner />
+                </div>
+            )}
+            {publicMonthDrawingQuery.data?.drawingData.length && (
+                <div className="relative flex w-full max-w-[90%] flex-wrap items-center justify-center gap-2">
+                    {publicMonthDrawingQuery.data.drawingData
+                        .filter((x) => x.day_drawing)
+                        .map((data, index) => {
+                            return (
+                                <div key={index} className="flex max-w-[150px] items-center justify-center sm:max-w-[300px]">
+                                    <Image
+                                        width={300}
+                                        height={300 * 0.6}
+                                        // key={index}
+                                        src={data.day_drawing as string}
+                                        alt=""
+                                    />
+                                </div>
+                            );
+                        })}
+                </div>
+            )}
         </div>
     );
 }
