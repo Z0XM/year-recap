@@ -375,11 +375,7 @@ export function PublicMonthDashboard() {
                     </CardContent>
                 </Card>
             </div>
-            {!publicMonthDrawingQuery.data && (
-                <div className="p-4">
-                    <LoadingSpinner />
-                </div>
-            )}
+
             {publicMonthDrawingQuery.data?.drawingData.length && (
                 <div className="relative flex w-full max-w-[90%] flex-wrap items-center justify-center gap-2">
                     {publicMonthDrawingQuery.data.drawingData
@@ -397,6 +393,11 @@ export function PublicMonthDashboard() {
                                 </div>
                             );
                         })}
+                </div>
+            )}
+            {!publicMonthDrawingQuery.isLoading && (
+                <div className="p-4">
+                    <LoadingSpinner />
                 </div>
             )}
         </div>
