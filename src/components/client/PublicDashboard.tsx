@@ -76,9 +76,9 @@ export function PublicMonthDashboard() {
                         shareEmojis: false
                     };
                 }
-                accessMap[accessData.user_id].shareColors = accessData.access === '--color--';
-                accessMap[accessData.user_id].shareScores = accessData.access === '--score--';
-                accessMap[accessData.user_id].shareEmojis = accessData.access === '--emoji--';
+                accessMap[accessData.user_id].shareColors = accessMap[accessData.user_id].shareColors || accessData.access === '--color--';
+                accessMap[accessData.user_id].shareScores = accessMap[accessData.user_id].shareScores || accessData.access === '--score--';
+                accessMap[accessData.user_id].shareEmojis = accessMap[accessData.user_id].shareEmojis || accessData.access === '--emoji--';
             });
 
             const userArray = await supabase
