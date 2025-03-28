@@ -34,26 +34,31 @@ export function HelloUser(props: { today: Date; display_name: string; dayInt: nu
                 </CardContent>
             </Card>
             <div className="flex w-full flex-wrap items-center justify-between gap-2">
-                {/* <Link
-                    href="/p/dashboard/"
-                    className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                >
-                    Private Dashboard
-                </Link>
-                <Link
-                    href="/p/dashboard/public"
-                    className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                >
-                    Public Dashboard
-                </Link> */}
-                {/* {props.type === 'day' && (
+                {dayInt > 26 ? (
+                    <>
+                        {' '}
+                        <Link
+                            href="/p/dashboard/"
+                            className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        >
+                            Private Dashboard
+                        </Link>
+                        <Link
+                            href="/p/dashboard/public"
+                            className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        >
+                            Public Dashboard
+                        </Link>
+                    </>
+                ) : null}
+                {dayInt > 26 && props.type === 'day' && (
                     <Link
                         href="/p/month-end"
                         className="inline-flex h-9 flex-1 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border bg-background px-4 py-2 text-sm font-medium text-card-foreground shadow transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     >
                         Month End Form
                     </Link>
-                )} */}
+                )}
                 {props.type === 'month' && (
                     <Link
                         href="/p/"
