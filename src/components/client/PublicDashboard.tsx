@@ -58,35 +58,35 @@ export function PublicMonthDashboard() {
             const selectedMonthInt = selectedYear * 10000 + selectedMonth * 100;
             const selectedRange = [selectedMonthInt, selectedMonthInt + 99];
 
-            const access = await supabase
-                .from('dashboard_shares')
-                .select('user_id, access')
-                .eq('month', selectedMonth)
-                .eq('year', selectedYear);
+            // const access = await supabase
+            //     .from('dashboard_shares')
+            //     .select('user_id, access')
+            //     .eq('month', selectedMonth)
+            //     .eq('year', selectedYear);
 
-            if (access.error || !access.data) {
-                throw access.error;
-            }
+            // if (access.error || !access.data) {
+            //     throw access.error;
+            // }
 
-            const accessMap: { [key: string]: { shareColors: boolean; shareScores: boolean; shareEmojis: boolean } } = {};
+            // const accessMap: { [key: string]: { shareColors: boolean; shareScores: boolean; shareEmojis: boolean } } = {};
 
-            access.data.forEach((accessData) => {
-                if (!accessMap[accessData.user_id]) {
-                    accessMap[accessData.user_id] = {
-                        shareColors: false,
-                        shareScores: false,
-                        shareEmojis: false
-                    };
-                }
-                accessMap[accessData.user_id].shareColors = accessMap[accessData.user_id].shareColors || accessData.access === '--color--';
-                accessMap[accessData.user_id].shareScores = accessMap[accessData.user_id].shareScores || accessData.access === '--score--';
-                accessMap[accessData.user_id].shareEmojis = accessMap[accessData.user_id].shareEmojis || accessData.access === '--emoji--';
-            });
+            // access.data.forEach((accessData) => {
+            //     if (!accessMap[accessData.user_id]) {
+            //         accessMap[accessData.user_id] = {
+            //             shareColors: false,
+            //             shareScores: false,
+            //             shareEmojis: false
+            //         };
+            //     }
+            //     accessMap[accessData.user_id].shareColors = accessMap[accessData.user_id].shareColors || accessData.access === '--color--';
+            //     accessMap[accessData.user_id].shareScores = accessMap[accessData.user_id].shareScores || accessData.access === '--score--';
+            //     accessMap[accessData.user_id].shareEmojis = accessMap[accessData.user_id].shareEmojis || accessData.access === '--emoji--';
+            // });
 
             const userArray = await supabase
                 .from('users')
                 .select('id, display_name, accent_color')
-                .in('id', Object.keys(accessMap))
+                // .in('id', Object.keys(accessMap))
                 .eq('isActive', true);
 
             if (userArray.error || !userArray.data) {
@@ -126,18 +126,18 @@ export function PublicMonthDashboard() {
             const decryptedMetadataArray = await SecurityClient.decryptMultipleKeys(
                 dayDataArray.data.map((userData) => {
                     const sharedObject: { [key: string]: string } = {};
-                    if (!accessMap[userData.user_id]) {
-                        return sharedObject;
-                    }
-                    if (accessMap[userData.user_id].shareColors) {
-                        sharedObject.day_color = userData.day_color as string;
-                    }
-                    if (accessMap[userData.user_id].shareScores) {
-                        sharedObject.day_score = userData.day_score as string;
-                    }
-                    if (accessMap[userData.user_id].shareEmojis) {
-                        sharedObject.day_emoji = userData.day_emoji as string;
-                    }
+                    // if (!accessMap[userData.user_id]) {
+                    //     return sharedObject;
+                    // }
+                    // if (accessMap[userData.user_id].shareColors) {
+                    sharedObject.day_color = userData.day_color as string;
+                    // }
+                    // if (accessMap[userData.user_id].shareScores) {
+                    sharedObject.day_score = userData.day_score as string;
+                    // }
+                    // if (accessMap[userData.user_id].shareEmojis) {
+                    sharedObject.day_emoji = userData.day_emoji as string;
+                    // }
 
                     return sharedObject;
                 })

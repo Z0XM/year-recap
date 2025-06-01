@@ -139,35 +139,35 @@ export function PrivateMonthDashboard() {
         staleTime: Infinity
     });
 
-    useEffect(() => {
-        const fetchAccess = async () => {
-            const dashboardShares = await supabase
-                .from('dashboard_shares')
-                .select('access')
-                .eq('user_id', user!.id)
-                .eq('month', selectedMonth)
-                .eq('year', selectedYear);
+    // useEffect(() => {
+    //     const fetchAccess = async () => {
+    //         const dashboardShares = await supabase
+    //             .from('dashboard_shares')
+    //             .select('access')
+    //             .eq('user_id', user!.id)
+    //             .eq('month', selectedMonth)
+    //             .eq('year', selectedYear);
 
-            if (dashboardShares.error || !dashboardShares.data) {
-                throw dashboardShares.error;
-            }
+    //         if (dashboardShares.error || !dashboardShares.data) {
+    //             throw dashboardShares.error;
+    //         }
 
-            if (dashboardShares.data.length === 0) {
-                setShareColor(false);
-                setShareEmotions(false);
-                setShareScores(false);
-                setShareDrawings(false);
-                return;
-            }
-            const allAccessString = dashboardShares.data.map((x) => x.access).join(':');
+    //         if (dashboardShares.data.length === 0) {
+    //             setShareColor(false);
+    //             setShareEmotions(false);
+    //             setShareScores(false);
+    //             setShareDrawings(false);
+    //             return;
+    //         }
+    //         const allAccessString = dashboardShares.data.map((x) => x.access).join(':');
 
-            setShareColor(allAccessString.includes('--color--'));
-            setShareEmotions(allAccessString.includes('--emoji--'));
-            setShareScores(allAccessString.includes('--score--'));
-            setShareDrawings(allAccessString.includes('--drawing--'));
-        };
-        fetchAccess().then().catch(console.error);
-    }, []);
+    //         setShareColor(allAccessString.includes('--color--'));
+    //         setShareEmotions(allAccessString.includes('--emoji--'));
+    //         setShareScores(allAccessString.includes('--score--'));
+    //         setShareDrawings(allAccessString.includes('--drawing--'));
+    //     };
+    //     fetchAccess().then().catch(console.error);
+    // }, []);
 
     const handleAccessChange = async ({ access, value }: { access: string; value: boolean }) => {
         if (value) await supabase.from('dashboard_shares').insert({ user_id: user!.id, month: selectedMonth, year: selectedYear, access });
@@ -211,7 +211,7 @@ export function PrivateMonthDashboard() {
                     <CardHeader>
                         <CardTitle>Calendar of Colors</CardTitle>
                         <CardDescription className="flex items-center justify-start gap-2">
-                            <Switch
+                            {/* <Switch
                                 name="share_color"
                                 checked={shareColor}
                                 onCheckedChange={(newValue) => {
@@ -226,7 +226,7 @@ export function PrivateMonthDashboard() {
                                         });
                                 }}
                             />
-                            <Label htmlFor="share_color">{shareColor ? 'Shared To Everyone' : 'Not Shared'}</Label>
+                            <Label htmlFor="share_color">{shareColor ? 'Shared To Everyone' : 'Not Shared'}</Label> */}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -269,7 +269,7 @@ export function PrivateMonthDashboard() {
                     <CardHeader>
                         <CardTitle>Calendar of Emotions</CardTitle>
                         <CardDescription className="flex items-center justify-start gap-2">
-                            <Switch
+                            {/* <Switch
                                 name="share_emoji"
                                 checked={shareEmotions}
                                 onCheckedChange={(newValue) => {
@@ -284,7 +284,7 @@ export function PrivateMonthDashboard() {
                                         });
                                 }}
                             />
-                            <Label htmlFor="share_emoji">{shareEmotions ? 'Shared To Everyone' : 'Not Shared'}</Label>
+                            <Label htmlFor="share_emoji">{shareEmotions ? 'Shared To Everyone' : 'Not Shared'}</Label> */}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -327,7 +327,7 @@ export function PrivateMonthDashboard() {
                     <CardHeader>
                         <CardTitle>How were your days ?</CardTitle>
                         <CardDescription className="flex items-center justify-start gap-2">
-                            <Switch
+                            {/* <Switch
                                 name="share_score"
                                 checked={shareScores}
                                 onCheckedChange={(newValue) => {
@@ -342,7 +342,7 @@ export function PrivateMonthDashboard() {
                                         });
                                 }}
                             />
-                            <Label htmlFor="share_score">{shareScores ? 'Shared To Everyone' : 'Not Shared'}</Label>
+                            <Label htmlFor="share_score">{shareScores ? 'Shared To Everyone' : 'Not Shared'}</Label> */}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
