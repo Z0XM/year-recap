@@ -196,6 +196,9 @@ export function PrivateMonthDashboard() {
                     <SelectItem value="1">January</SelectItem>
                     <SelectItem value="2">February</SelectItem>
                     <SelectItem value="3">March</SelectItem>
+                    <SelectItem value="4">April</SelectItem>
+                    <SelectItem value="5">May</SelectItem>
+                    <SelectItem value="6">June</SelectItem>
                 </SelectContent>
             </Select>
             <div>
