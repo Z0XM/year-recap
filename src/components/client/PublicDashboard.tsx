@@ -256,6 +256,7 @@ export function PublicMonthDashboard() {
                     <SelectItem value="4">April</SelectItem>
                     <SelectItem value="5">May</SelectItem>
                     <SelectItem value="6">June</SelectItem>
+                    <SelectItem value="7">July</SelectItem>
                 </SelectContent>
             </Select>
             <div>
