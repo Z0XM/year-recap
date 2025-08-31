@@ -1,6 +1,7 @@
 'use client';
 
-import { CaretUpDown, Eraser } from '@phosphor-icons/react';
+import { cn } from '@/lib/utils';
+import { CaretUpDown, Eraser, TrashSimple } from '@phosphor-icons/react';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 export function Canvas({
@@ -11,6 +12,7 @@ export function Canvas({
     setDayDrawingFunction: Dispatch<SetStateAction<() => string>>;
 }) {
     const [isDrawing, setIsDrawing] = useState(false);
+    const [isEraser, setIsEraser] = useState(false);
 
     const [drawColor, setDrawColor] = useState('#ffffff');
 
@@ -78,10 +80,19 @@ export function Canvas({
             setIsDrawing(true);
 
             context.beginPath();
-            context.lineWidth = 3;
             context.lineCap = 'round';
             context.lineJoin = 'round';
-            context.strokeStyle = drawColor;
+
+            if (isEraser) {
+                context.lineWidth = 5;
+                context.globalCompositeOperation = 'destination-out';
+                context.strokeStyle = 'rgba(0,0,0,1)';
+            } else {
+                context.lineWidth = 3;
+                context.globalCompositeOperation = 'source-over';
+                context.strokeStyle = drawColor;
+            }
+
             context.moveTo(offsetX, offsetY);
         }
     };
@@ -92,10 +103,19 @@ export function Canvas({
 
     const onMove = (context: any, offsetX: number, offsetY: number) => {
         if (isDrawing && context) {
-            context.lineWidth = 3;
             context.lineCap = 'round';
             context.lineJoin = 'round';
-            context.strokeStyle = drawColor;
+
+            if (isEraser) {
+                context.lineWidth = 7;
+                context.globalCompositeOperation = 'destination-out';
+                context.strokeStyle = 'rgba(0,0,0,1)';
+            } else {
+                context.lineWidth = 3;
+                context.globalCompositeOperation = 'source-over';
+                context.strokeStyle = drawColor;
+            }
+
             context.lineTo(offsetX, offsetY);
             context.stroke();
             context.beginPath();
@@ -152,52 +172,85 @@ export function Canvas({
                             className="h-[1.75rem] w-[1.75rem] rounded-sm bg-white duration-300 hover:scale-110 lg:h-8 lg:w-8"
                             aria-label="White"
                             type="button"
-                            onClick={() => setDrawColor('#ffffff')}
+                            onClick={() => {
+                                setIsEraser(false);
+                                setDrawColor('#ffffff');
+                            }}
                         />
 
                         <button
                             className="h-[1.75rem] w-[1.75rem] rounded-sm bg-[#eab308] duration-300 hover:scale-110 lg:h-8 lg:w-8"
                             aria-label="Yellow"
                             type="button"
-                            onClick={() => setDrawColor('#eab308')}
+                            onClick={() => {
+                                setIsEraser(false);
+                                setDrawColor('#eab308');
+                            }}
                         />
                         <button
                             className="h-[1.75rem] w-[1.75rem] rounded-sm bg-[#ff7e01] duration-300 hover:scale-110 lg:h-8 lg:w-8"
                             aria-label="Orange"
                             type="button"
-                            onClick={() => setDrawColor('#ff7e01')}
+                            onClick={() => {
+                                setIsEraser(false);
+                                setDrawColor('#ff7e01');
+                            }}
                         />
                         <button
                             className="h-[1.75rem] w-[1.75rem] rounded-sm bg-[#ef4444] duration-300 hover:scale-110 lg:h-8 lg:w-8"
                             aria-label="Red"
                             type="button"
-                            onClick={() => setDrawColor('#ef4444')}
+                            onClick={() => {
+                                setIsEraser(false);
+                                setDrawColor('#ef4444');
+                            }}
                         />
                         <button
                             className="h-[1.75rem] w-[1.75rem] rounded-sm bg-[#22c55e] duration-300 hover:scale-110 lg:h-8 lg:w-8"
                             aria-label="Green"
                             type="button"
-                            onClick={() => setDrawColor('#22c55e')}
+                            onClick={() => {
+                                setIsEraser(false);
+                                setDrawColor('#22c55e');
+                            }}
                         />
 
                         <button
                             className="h-[1.75rem] w-[1.75rem] rounded-sm bg-[#3b82f6] duration-300 hover:scale-110 lg:h-8 lg:w-8"
                             aria-label="Blue"
                             type="button"
-                            onClick={() => setDrawColor('#3b82f6')}
+                            onClick={() => {
+                                setIsEraser(false);
+                                setDrawColor('#3b82f6');
+                            }}
                         />
                         <button
                             className="h-[1.75rem] w-[1.75rem] rounded-sm bg-[#fc77fe] duration-300 hover:scale-110 lg:h-8 lg:w-8"
                             aria-label="Pink"
                             type="button"
-                            onClick={() => setDrawColor('#fc77fe')}
+                            onClick={() => {
+                                setIsEraser(false);
+                                setDrawColor('#fc77fe');
+                            }}
                         />
+                        <div className="col-span-2 flex items-center justify-center xl:col-span-1 xl:mt-2">
+                            <button
+                                type="button"
+                                className={cn(
+                                    `h-[1.75rem] w-[1.75rem] cursor-pointer bg-transparent duration-200 hover:scale-110 hover:border-primary hover:text-primary lg:h-8 lg:w-8`,
+                                    isEraser ? 'text-primary' : 'text-white'
+                                )}
+                                onClick={() => setIsEraser((prev) => !prev)}
+                            >
+                                <Eraser weight="fill" size={32} />
+                            </button>
+                        </div>
                         <div className="col-span-2 flex items-center justify-center xl:col-span-1 xl:mt-2">
                             <button
                                 type="button"
                                 className="h-[1.75rem] w-[1.75rem] cursor-pointer bg-transparent text-white duration-200 hover:scale-110 hover:border-primary hover:text-primary lg:h-8 lg:w-8"
                             >
-                                <Eraser
+                                <TrashSimple
                                     weight="fill"
                                     size={32}
                                     onClick={() => {
